@@ -2158,7 +2158,7 @@
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/espressomartini.rsi
     state: icon_empty
-  metamorphicMaxFillLevels: 6
+  metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
