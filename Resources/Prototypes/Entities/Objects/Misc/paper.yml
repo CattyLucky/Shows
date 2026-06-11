@@ -85,6 +85,13 @@
   - type: PaperVisualizer
   - type: PaperVisuals
   - type: StationAiWhitelist
+  - type: Material
+  - type: Stack
+    stackType: PrinterPage
+    count: 1
+  - type: PhysicalComposition
+    materialComposition:
+      PrinterPaper: 100
 
 - type: entity
   name: paper scrap
