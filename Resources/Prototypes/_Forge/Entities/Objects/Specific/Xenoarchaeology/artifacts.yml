@@ -1,0 +1,96 @@
+- type: entityTable
+  id: ForgeArtifactStudyEffectsSafe
+  table: !type:GroupSelector
+    children:
+    - id: XenoArtifactEffectBadFeeling
+      weight: 10
+    - id: XenoArtifactEffectGoodFeeling
+      weight: 10
+    - id: XenoArtifactEffectJunkSpawn
+      weight: 10
+    - id: XenoArtifactEffectLightFlicker
+      weight: 10
+    - id: XenoArtifactFloraSpawn
+      weight: 8
+    - id: XenoArtifactChemicalPuddle
+      weight: 8
+    - id: XenoArtifactFoamMild
+      weight: 8
+    - id: XenoArtifactRandomInstrumentSpawn
+      weight: 6
+    - id: XenoArtifactChargeBattery
+      weight: 6
+    - id: XenoArtifactKnock
+      weight: 6
+    - id: XenoArtifactMaterialSpawnGlass
+      weight: 4
+    - id: XenoArtifactMaterialSpawnSteel
+      weight: 4
+    - id: XenoArtifactMaterialSpawnPlastic
+      weight: 4
+
+- type: entity
+  parent: BaseXenoArtifactStructure
+  id: ForgeContractStudyArtifactEasy
+  name: simple contract artifact
+  description: A controlled artifact prepared for simple Forge study contracts.
+  suffix: Forge, Study Contract, Easy
+  components:
+  - type: XenoArtifact
+    nodeCount:
+      min: 3
+      max: 4
+    segmentSize:
+      min: 1
+      max: 2
+    nodesPerSegmentLayer:
+      min: 1
+      max: 1
+    effectsTable: !type:NestedSelector
+      tableId: ForgeArtifactStudyEffectsSafe
+  - type: CargoSellBlacklist
+  - type: ForgeArtifactStudyPreset
+
+- type: entity
+  parent: BaseXenoArtifactStructure
+  id: ForgeContractStudyArtifactMedium
+  name: standard contract artifact
+  description: A controlled artifact prepared for standard Forge study contracts.
+  suffix: Forge, Study Contract, Medium
+  components:
+  - type: XenoArtifact
+    nodeCount:
+      min: 5
+      max: 7
+    segmentSize:
+      min: 2
+      max: 4
+    nodesPerSegmentLayer:
+      min: 1
+      max: 2
+    effectsTable: !type:NestedSelector
+      tableId: ForgeArtifactStudyEffectsSafe
+  - type: CargoSellBlacklist
+  - type: ForgeArtifactStudyPreset
+
+- type: entity
+  parent: BaseXenoArtifactStructure
+  id: ForgeContractStudyArtifactHard
+  name: complex contract artifact
+  description: A controlled artifact prepared for complex Forge study contracts.
+  suffix: Forge, Study Contract, Hard
+  components:
+  - type: XenoArtifact
+    nodeCount:
+      min: 11
+      max: 13
+    segmentSize:
+      min: 4
+      max: 7
+    nodesPerSegmentLayer:
+      min: 1
+      max: 3
+    effectsTable: !type:NestedSelector
+      tableId: ForgeArtifactStudyEffectsSafe
+  - type: CargoSellBlacklist
+  - type: ForgeArtifactStudyPreset

@@ -38,6 +38,7 @@ public sealed partial class CharacterPickerButton : ContainerButton
         ToggleMode = true;
         Group = group;
         var description = profile.Name;
+        description += $"\n{profile.BankBalanceText}";
 
         View.LoadPreview(profile);
 

@@ -30,4 +30,9 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
     {
         Summary.Text = value;
     }
+
+    public void SetBankBalanceText(string value)
+    {
+        BankBalance.Text = value;
+    }
 }

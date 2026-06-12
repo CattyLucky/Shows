@@ -173,11 +173,13 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
         {
             PreviewPanel.ProfilePreviewSpriteView.ClearPreview();
             PreviewPanel.SetSummaryText(string.Empty);
+            PreviewPanel.SetBankBalanceText(string.Empty);
             return;
         }
 
         PreviewPanel.ProfilePreviewSpriteView.LoadPreview(humanoid);
         PreviewPanel.SetSummaryText(humanoid.Summary);
+        PreviewPanel.SetBankBalanceText(humanoid.BankBalanceText);
     }
 
     private void RefreshProfileEditor()

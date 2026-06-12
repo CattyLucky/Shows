@@ -213,6 +213,7 @@ namespace Content.Server.Database
             profile.FlavorText = humanoid.FlavorText;
             profile.Species = humanoid.Species;
             profile.Age = humanoid.Age;
+            profile.BankBalance = humanoid.BankBalance;
             profile.Sex = humanoid.Sex.ToString();
             profile.Gender = humanoid.Gender.ToString();
             profile.EyeColor = appearance.EyeColor.ToHex();

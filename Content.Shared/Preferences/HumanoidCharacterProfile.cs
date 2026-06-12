@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Content.Shared._NF.Bank;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
@@ -31,6 +32,7 @@ namespace Content.Shared.Preferences
     public sealed partial class HumanoidCharacterProfile
     {
         public static readonly ProtoId<SpeciesPrototype> DefaultSpecies = "Human";
+        public const int DefaultBalance = 75000;
         private static readonly Regex RestrictedNameRegex = new(@"[^A-Za-z0-9 '\-]");
         private static readonly Regex ICNameCaseRegex = new(@"^(?<word>\w)|\b(?<word>\w)(?=\w*$)");
 
@@ -89,6 +91,9 @@ namespace Content.Shared.Preferences
         [DataField]
         public Gender Gender { get; private set; } = Gender.Male;
 
+        [DataField]
+        public int BankBalance { get; private set; } = DefaultBalance;
+
         /// <summary>
         /// Stores markings, eye colors, etc for the profile.
         /// </summary>
@@ -136,7 +141,8 @@ namespace Content.Shared.Preferences
             PreferenceUnavailableMode preferenceUnavailable,
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
-            Dictionary<string, RoleLoadout> loadouts)
+            Dictionary<string, RoleLoadout> loadouts,
+            int bankBalance = DefaultBalance)
         {
             Name = name;
             FlavorText = flavortext;
@@ -144,6 +150,7 @@ namespace Content.Shared.Preferences
             Age = age;
             Sex = sex;
             Gender = gender;
+            BankBalance = bankBalance;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
             _jobPriorities = jobPriorities;
@@ -181,7 +188,8 @@ namespace Content.Shared.Preferences
                 other.PreferenceUnavailable,
                 new HashSet<ProtoId<AntagPrototype>>(other.AntagPreferences),
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
-                new Dictionary<string, RoleLoadout>(other.Loadouts))
+                new Dictionary<string, RoleLoadout>(other.Loadouts),
+                other.BankBalance)
         {
         }
 
@@ -214,7 +222,7 @@ namespace Content.Shared.Preferences
         }
 
         // TODO: This should eventually not be a visual change only.
-        public static HumanoidCharacterProfile Random(HashSet<string>? ignoredSpecies = null)
+        public static HumanoidCharacterProfile Random(HashSet<string>? ignoredSpecies = null, int balance = DefaultBalance)
         {
             var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
             var random = IoCManager.Resolve<IRobustRandom>();
@@ -225,10 +233,10 @@ namespace Content.Shared.Preferences
                 .ToArray()
             ).ID;
 
-            return RandomWithSpecies(species);
+            return RandomWithSpecies(species, balance);
         }
 
-        public static HumanoidCharacterProfile RandomWithSpecies(string? species = null)
+        public static HumanoidCharacterProfile RandomWithSpecies(string? species = null, int balance = DefaultBalance)
         {
             species ??= HumanoidCharacterProfile.DefaultSpecies;
 
@@ -264,6 +272,7 @@ namespace Content.Shared.Preferences
                 Age = age,
                 Gender = gender,
                 Species = species,
+                BankBalance = balance,
                 Appearance = HumanoidCharacterAppearance.Random(species, sex),
             };
         }
@@ -291,6 +300,11 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile WithGender(Gender gender)
         {
             return new(this) { Gender = gender };
+        }
+
+        public HumanoidCharacterProfile WithBankBalance(int bankBalance)
+        {
+            return new(this) { BankBalance = bankBalance };
         }
 
         public HumanoidCharacterProfile WithSpecies(string species)
@@ -460,12 +474,15 @@ namespace Content.Shared.Preferences
                 ("age", Age)
             );
 
+        public string BankBalanceText => BankSystemExtensions.ToSpesoString(BankBalance);
+
         public bool MemberwiseEquals(HumanoidCharacterProfile other)
         {
             if (Name != other.Name) return false;
             if (Age != other.Age) return false;
             if (Sex != other.Sex) return false;
             if (Gender != other.Gender) return false;
+            if (BankBalance != other.BankBalance) return false;
             if (Species != other.Species) return false;
             if (PreferenceUnavailable != other.PreferenceUnavailable) return false;
             if (SpawnPriority != other.SpawnPriority) return false;
@@ -511,6 +528,8 @@ namespace Content.Shared.Preferences
                 _ => Gender.Epicene // Invalid enum values.
             };
 
+            var bankBalance = Math.Max(0, BankBalance);
+
             string name;
             var maxNameLength = configManager.GetCVar(CCVars.MaxNameLength);
             if (string.IsNullOrEmpty(Name))
@@ -533,15 +552,22 @@ namespace Content.Shared.Preferences
                 name = RestrictedNameRegex.Replace(name, string.Empty);
             }
 
+            name = name.Trim();
+
             if (configManager.GetCVar(CCVars.ICNameCase))
             {
                 // This regex replaces the first character of the first and last words of the name with their uppercase version
                 name = ICNameCaseRegex.Replace(name, m => m.Groups["word"].Value.ToUpper());
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
-                name = GetName(Species, gender);
+                name = GetName(Species, gender).Trim();
+                if (configManager.GetCVar(CCVars.RestrictedNames))
+                    name = RestrictedNameRegex.Replace(name, string.Empty).Trim();
+
+                if (string.IsNullOrWhiteSpace(name))
+                    name = "John Doe";
             }
 
             string flavortext;
@@ -606,6 +632,7 @@ namespace Content.Shared.Preferences
             Age = age;
             Sex = sex;
             Gender = gender;
+            BankBalance = bankBalance;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
 
@@ -698,7 +725,18 @@ namespace Content.Shared.Preferences
         public static string GetName(string species, Gender gender)
         {
             var namingSystem = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<NamingSystem>();
-            return namingSystem.GetName(species, gender);
+            var name = namingSystem.GetName(species, gender);
+            if (!string.IsNullOrWhiteSpace(name))
+                return name;
+
+            if (species != DefaultSpecies)
+            {
+                name = namingSystem.GetName(DefaultSpecies, gender);
+                if (!string.IsNullOrWhiteSpace(name))
+                    return name;
+            }
+
+            return "John Doe";
         }
         public bool Equals(HumanoidCharacterProfile? other)
         {
@@ -726,6 +764,7 @@ namespace Content.Shared.Preferences
             hashCode.Add(Age);
             hashCode.Add((int)Sex);
             hashCode.Add((int)Gender);
+            hashCode.Add(BankBalance);
             hashCode.Add(Appearance);
             hashCode.Add((int)SpawnPriority);
             hashCode.Add((int)PreferenceUnavailable);
