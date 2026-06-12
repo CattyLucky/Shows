@@ -370,7 +370,8 @@ public sealed partial class ArrivalsSystem : EntitySystem
             spawnLoc,
             ev.Job,
             ev.HumanoidCharacterProfile,
-            ev.Station);
+            ev.Station,
+            session: ev.Session);
 
         EnsureComp<PendingClockInComponent>(ev.SpawnResult.Value);
         EnsureComp<AutoOrientComponent>(ev.SpawnResult.Value);

@@ -1,7 +1,10 @@
+using System.Linq;
+using Content.Server._NF.Bank;
 using Content.Server.Access.Systems;
 using Content.Server.Humanoid;
 using Content.Server.Mind;
 using Content.Server.PDA;
+using Content.Server.Preferences.Managers;
 using Content.Server.Station.Components;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
@@ -35,14 +38,17 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
 {
     [Dependency] private SharedAccessSystem _accessSystem = default!;
     [Dependency] private ActorSystem _actors = default!;
+    [Dependency] private BankSystem _bank = default!;
     [Dependency] private IdCardSystem _cardSystem = default!;
     [Dependency] private IConfigurationManager _configurationManager = default!;
+    [Dependency] private IDependencyCollection _dependencyCollection = default!;
     [Dependency] private HumanoidProfileSystem _humanoidProfile = default!;
     [Dependency] private SharedVisualBodySystem _visualBody = default!;
     [Dependency] private IdentitySystem _identity = default!;
     [Dependency] private MetaDataSystem _metaSystem = default!;
     [Dependency] private PdaSystem _pdaSystem = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IServerPreferencesManager _preferences = default!;
     [Dependency] private MindSystem _mindSystem = default!;
 
     /// <summary>
@@ -57,12 +63,17 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     /// <remarks>
     /// This only spawns the character, and does none of the mind-related setup you'd need for it to be playable.
     /// </remarks>
-    public EntityUid? SpawnPlayerCharacterOnStation(EntityUid? station, ProtoId<JobPrototype>? job, HumanoidCharacterProfile? profile, StationSpawningComponent? stationSpawning = null)
+    public EntityUid? SpawnPlayerCharacterOnStation(
+        EntityUid? station,
+        ProtoId<JobPrototype>? job,
+        HumanoidCharacterProfile? profile,
+        StationSpawningComponent? stationSpawning = null,
+        ICommonSession? session = null)
     {
         if (station != null && !Resolve(station.Value, ref stationSpawning))
             throw new ArgumentException("Tried to use a non-station entity as a station!", nameof(station));
 
-        var ev = new PlayerSpawningEvent(job, profile, station);
+        var ev = new PlayerSpawningEvent(job, profile, station, session);
 
         RaiseLocalEvent(ev);
         DebugTools.Assert(ev.SpawnResult is { Valid: true } or null);
@@ -82,13 +93,15 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     /// <param name="profile">Appearance profile to use for the character.</param>
     /// <param name="station">The station this player is being spawned on.</param>
     /// <param name="entity">The entity to use, if one already exists.</param>
+    /// <param name="session">The player session to charge paid loadout items against.</param>
     /// <returns>The spawned entity</returns>
     public EntityUid SpawnPlayerMob(
         EntityCoordinates coordinates,
         ProtoId<JobPrototype>? job,
         HumanoidCharacterProfile? profile,
         EntityUid? station,
-        EntityUid? entity = null)
+        EntityUid? entity = null,
+        ICommonSession? session = null)
     {
         _prototypeManager.Resolve(job, out var prototype);
         RoleLoadout? loadout = null;
@@ -104,7 +117,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             if (loadout == null)
             {
                 loadout = new RoleLoadout(jobLoadout);
-                loadout.SetDefault(profile, _actors.GetSession(entity), _prototypeManager);
+                loadout.SetDefault(profile, session ?? _actors.GetSession(entity), _prototypeManager);
             }
         }
 
@@ -147,7 +160,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
 
         if (loadout != null)
         {
-            EquipRoleLoadout(entity.Value, loadout, roleProto!);
+            EquipPaidRoleLoadout(entity.Value, loadout, roleProto!, profile, session);
         }
 
         if (prototype?.StartingGear != null)
@@ -167,6 +180,89 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         DoJobSpecials(job, entity.Value);
         _identity.QueueIdentityUpdate(entity.Value);
         return entity.Value;
+    }
+
+    private void EquipPaidRoleLoadout(
+        EntityUid entity,
+        RoleLoadout loadout,
+        RoleLoadoutPrototype roleProto,
+        HumanoidCharacterProfile? profile,
+        ICommonSession? session)
+    {
+        var bankBalance = Math.Max(0, profile?.BankBalance ?? 0);
+        var initialBankBalance = bankBalance;
+        PlayerPreferences? prefs = null;
+        var hasBalance = profile != null &&
+                         session != null &&
+                         _preferences.TryGetCachedPreferences(session.UserId, out prefs) &&
+                         prefs.IndexOfCharacter(profile) != -1;
+
+        // Order loadout selections by the order they appear on the prototype.
+        foreach (var group in loadout.SelectedLoadouts.OrderBy(x => roleProto.Groups.FindIndex(e => e == x.Key)))
+        {
+            List<ProtoId<LoadoutPrototype>> equippedItems = new();
+
+            foreach (var items in group.Value)
+            {
+                if (!_prototypeManager.TryIndex(items.Prototype, out var loadoutProto))
+                {
+                    Log.Error($"Unable to find loadout prototype for {items.Prototype}");
+                    continue;
+                }
+
+                var price = Math.Max(0, loadoutProto.Price);
+                if (price > bankBalance || price > 0 && !hasBalance)
+                    continue;
+
+                bankBalance -= price;
+                EquipStartingGear(entity, loadoutProto, raiseEvent: false);
+                equippedItems.Add(loadoutProto.ID);
+            }
+
+            if (!_prototypeManager.TryIndex(group.Key, out var groupProto))
+            {
+                Log.Error($"Unable to find loadout group prototype for {group.Key}");
+                continue;
+            }
+
+            if (groupProto.MinLimit == 0 || equippedItems.Count >= groupProto.MinLimit)
+                continue;
+
+            foreach (var fallback in groupProto.Loadouts)
+            {
+                if (equippedItems.Contains(fallback))
+                    continue;
+
+                if (profile != null &&
+                    !loadout.IsValid(profile, session, fallback, _dependencyCollection, out _))
+                {
+                    continue;
+                }
+
+                if (!_prototypeManager.TryIndex(fallback, out var loadoutProto))
+                {
+                    Log.Error($"Unable to find loadout prototype for {fallback}");
+                    continue;
+                }
+
+                EquipStartingGear(entity, loadoutProto, raiseEvent: false);
+                equippedItems.Add(fallback);
+
+                if (equippedItems.Count >= groupProto.MinLimit)
+                    break;
+            }
+        }
+
+        EquipRoleName(entity, loadout, roleProto);
+
+        var spent = initialBankBalance - bankBalance;
+        if (!hasBalance || spent <= 0)
+            return;
+
+        if (!_bank.TryBankWithdraw(session!, prefs!, profile!, spent, out var newBalance))
+            return;
+
+        _bank.SetMobBalance(entity, newBalance.Value, preserveOnSpawnComplete: true);
     }
 
     private void DoJobSpecials(ProtoId<JobPrototype>? job, EntityUid entity)
@@ -247,11 +343,20 @@ public sealed class PlayerSpawningEvent : EntityEventArgs
     /// The target station, if any.
     /// </summary>
     public readonly EntityUid? Station;
+    /// <summary>
+    /// The player session being spawned, if any.
+    /// </summary>
+    public readonly ICommonSession? Session;
 
-    public PlayerSpawningEvent(ProtoId<JobPrototype>? job, HumanoidCharacterProfile? humanoidCharacterProfile, EntityUid? station)
+    public PlayerSpawningEvent(
+        ProtoId<JobPrototype>? job,
+        HumanoidCharacterProfile? humanoidCharacterProfile,
+        EntityUid? station,
+        ICommonSession? session = null)
     {
         Job = job;
         HumanoidCharacterProfile = humanoidCharacterProfile;
         Station = station;
+        Session = session;
     }
 }

@@ -9,6 +9,10 @@ loadouts-min-limit = Мин. кол-во: { $count }
 loadouts-max-limit = Макс. кол-во: { $count }
 loadouts-points-limit = Очки: { $count } / { $max }
 
+frontier-loadout-cost = Стоимость снаряжения: { $cost }
+frontier-loadout-balance = Доступно: { $balance }
+frontier-loadout-item-price = { $item } ({ $price })
+
 loadouts-count-items-in-group = { $item } и { $count } { $count ->
     [1] другой предмет
     [few] других предмета

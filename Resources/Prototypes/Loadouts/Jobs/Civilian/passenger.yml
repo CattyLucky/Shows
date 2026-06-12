@@ -42,6 +42,7 @@
 # Rainbow
 - type: loadout
   id: RainbowJumpsuit
+  price: 350
   effects:
   - !type:GroupLoadoutEffect
     proto: GreyTider
@@ -51,6 +52,7 @@
 # Rainbow Jumpskirt
 - type: loadout
   id: RainbowJumpskirt
+  price: 350
   effects:
   - !type:GroupLoadoutEffect
     proto: GreyTider
@@ -60,6 +62,7 @@
 # Ancient
 - type: loadout
   id: AncientJumpsuit
+  price: 750
   effects:
   - !type:GroupLoadoutEffect
     proto: GreyTider
@@ -69,6 +72,7 @@
 # Neck
 - type: loadout
   id: Mantle
+  price: 1200
   equipment:
     neck: ClothingNeckMantle
   effects:
@@ -93,12 +97,14 @@
 
 - type: loadout
   id: CommonDuffel
+  price: 150
   equipment:
     back: ClothingBackpackDuffel
 
 # Gloves
 - type: loadout
   id: PassengerGloves
+  price: 300
   effects:
   - !type:GroupLoadoutEffect
     proto: GreyTider
@@ -119,5 +125,6 @@
 
 - type: loadout
   id: WinterBoots
+  price: 200
   equipment:
     shoes: ClothingShoesBootsWinter

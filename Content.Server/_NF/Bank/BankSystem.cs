@@ -19,6 +19,7 @@ public sealed partial class BankSystem : SharedBankSystem
     [Dependency] private IServerPreferencesManager _prefsManager = default!;
 
     private ISawmill _log = default!;
+    private readonly HashSet<EntityUid> _spawnBalanceOverrides = new();
 
     public override void Initialize()
     {
@@ -27,6 +28,7 @@ public sealed partial class BankSystem : SharedBankSystem
         _log = Logger.GetSawmill("bank");
 
         SubscribeLocalEvent<BankAccountComponent, ComponentInit>(OnBankAccountInit);
+        SubscribeLocalEvent<BankAccountComponent, EntityTerminatingEvent>(OnBankAccountTerminating);
         SubscribeLocalEvent<PlayerSpawnCompleteEvent>(OnPlayerSpawnComplete);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
     }
@@ -185,6 +187,17 @@ public sealed partial class BankSystem : SharedBankSystem
         return true;
     }
 
+    public void SetMobBalance(EntityUid mobUid, int balance, bool preserveOnSpawnComplete = false)
+    {
+        var bank = EnsureComp<BankAccountComponent>(mobUid);
+        bank.Balance = balance;
+
+        if (preserveOnSpawnComplete)
+            _spawnBalanceOverrides.Add(mobUid);
+
+        Dirty(mobUid, bank);
+    }
+
     private bool TrySetProfileBalance(
         ICommonSession session,
         PlayerPreferences prefs,
@@ -226,10 +239,29 @@ public sealed partial class BankSystem : SharedBankSystem
         UpdateBankBalance(uid, component);
     }
 
+    private void OnBankAccountTerminating(Entity<BankAccountComponent> ent, ref EntityTerminatingEvent args)
+    {
+        _spawnBalanceOverrides.Remove(ent.Owner);
+    }
+
     private void OnPlayerSpawnComplete(PlayerSpawnCompleteEvent args)
     {
         var bank = EnsureComp<BankAccountComponent>(args.Mob);
+
+        if (_spawnBalanceOverrides.Remove(args.Mob))
+        {
+            Dirty(args.Mob, bank);
+            return;
+        }
+
         bank.Balance = args.Profile.BankBalance;
+
+        if (_prefsManager.TryGetCachedPreferences(args.Player.UserId, out var prefs) &&
+            prefs.SelectedCharacter is HumanoidCharacterProfile profile)
+        {
+            bank.Balance = profile.BankBalance;
+        }
+
         Dirty(args.Mob, bank);
     }
 

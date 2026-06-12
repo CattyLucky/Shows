@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client.UserInterface.Controls;
+using Content.Shared._NF.Bank;
 using Content.Shared.CCVar;
 using Content.Shared.Dataset;
 using Content.Shared.Preferences;
@@ -89,6 +90,8 @@ public sealed partial class LoadoutWindow : FancyWindow
                 };
             }
         }
+
+        UpdateLoadoutFinance(loadout, collection);
     }
 
     public void RefreshLoadouts(RoleLoadout loadout, ICommonSession session, IDependencyCollection collection)
@@ -97,5 +100,27 @@ public sealed partial class LoadoutWindow : FancyWindow
         {
             group.RefreshLoadouts(Profile, loadout, session, collection);
         }
+
+        UpdateLoadoutFinance(loadout, collection);
+    }
+
+    private void UpdateLoadoutFinance(RoleLoadout loadout, IDependencyCollection collection)
+    {
+        var protoManager = collection.Resolve<IPrototypeManager>();
+        var cost = 0;
+
+        foreach (var loadoutGroup in loadout.SelectedLoadouts)
+        {
+            foreach (var selectedLoadout in loadoutGroup.Value)
+            {
+                if (!protoManager.TryIndex(selectedLoadout.Prototype, out var loadoutProto))
+                    continue;
+
+                cost += Math.Max(0, loadoutProto.Price);
+            }
+        }
+
+        Cost.Text = Loc.GetString("frontier-loadout-cost", ("cost", BankSystemExtensions.ToSpesoString(cost)));
+        Balance.Text = Loc.GetString("frontier-loadout-balance", ("balance", BankSystemExtensions.ToSpesoString(Profile.BankBalance)));
     }
 }

@@ -69,6 +69,7 @@ public sealed partial class SpawnPointSystem : EntitySystem
             spawnLoc,
             args.Job,
             args.HumanoidCharacterProfile,
-            args.Station);
+            args.Station,
+            session: args.Session);
     }
 }
