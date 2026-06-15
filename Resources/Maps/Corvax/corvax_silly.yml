@@ -9032,7 +9032,6 @@ entities:
   - uid: 8634
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: 4.5,12.5
       parent: 2
     - type: DeviceNetwork
@@ -60757,13 +60756,11 @@ entities:
   - uid: 8635
     components:
     - type: Transform
-      rot: 3.141592653589793 rad
       pos: 23.5,8.5
       parent: 2
   - uid: 8636
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: 17.5,24.5
       parent: 2
 - proto: Wrench

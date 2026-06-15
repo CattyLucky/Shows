@@ -1,0 +1,359 @@
+- type: entity
+  parent: BookBase
+  id: BookLoreBase
+  abstract: true
+  name: lore book
+  description: This book contains Corvax lore.
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Misc/books.rsi
+    layers:
+    - state: book_expensive_crystal
+
+- type: entity
+  parent: BookLoreBase
+  id: BookExpensiveCrystal
+  name: Crystals of Special Value
+  description: A book about blue-space and red-space crystals.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_expensive_crystal
+  - type: Paper
+    content: book-expensive-crystal-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookClones
+  name: The Turtel Crisis
+  description: A book about a clone uprising.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_clones
+  - type: Paper
+    content: book-clones-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookDAM
+  name: Antimatter Engine
+  description: A book about antimatter engines.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_DAM
+  - type: Paper
+    content: book-dam-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookFaks
+  name: Fax
+  description: A book about long-range fax communication.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_faks
+  - type: Paper
+    content: book-faks-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookFamalis
+  name: Interplanetary Brotherhood Families
+  description: A book about major galactic families.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_famalis
+  - type: Paper
+    content: book-famalis-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookGrav
+  name: Artificial Gravity Generator
+  description: A book about artificial gravity generators.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_grav
+  - type: Paper
+    content: book-grav-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookHalifat
+  name: Space Islam Norms and Six Shots
+  description: A book about the Haliphate Divine Conglomerate.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_halifat
+  - type: Paper
+    content: book-halifat-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookRedspace
+  name: Redspace
+  description: A book about redspace.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_redspace
+  - type: Paper
+    content: book-redspace-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookShips
+  name: Ship Classification
+  description: A book about ship classification.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_ships
+  - type: Paper
+    content: book-ships-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookZP
+  name: NanoTrasen Payroll System
+  description: A book about NanoTrasen payroll.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_zp
+  - type: Paper
+    content: book-zp-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookUSSP
+  name: USSP Political System
+  description: A book about the USSP political system.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_polit_USSP
+  - type: Paper
+    content: book-ussp-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookMirt
+  name: Cultural Pillar of the Mirtan Empire
+  description: A book about the Mirtan Empire.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_cult_mirt
+  - type: Paper
+    content: book-mirt-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookGior
+  name: GIOR
+  description: A book about GIOR.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_gior
+  - type: Paper
+    content: book-gior-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookSNK
+  name: SNK Foreign Policy
+  description: A book about SNK foreign policy.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_snk
+  - type: Paper
+    content: book-snk-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookUmpor
+  name: Umpor Federation Foreign Policy
+  description: A book about the Umpor Federation.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_umpor
+  - type: Paper
+    content: book-umpor-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookNooc
+  name: Erant Noocracy Class Structure
+  description: A book about the Erant Noocracy.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_nooc
+  - type: Paper
+    content: book-nooc-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookNakamura
+  name: Nakamura Engineering
+  description: A book about Nakamura Engineering.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_nakamura
+  - type: Paper
+    content: book-nakamura-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookVitz
+  name: Vitezstvi Spacefleet
+  description: A book about the Vitezstvi corporate spacefleet.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_vitz
+  - type: Paper
+    content: book-vitz-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookGefest
+  name: Gefest Company
+  description: A book about Gefest.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_gefest
+  - type: Paper
+    content: book-gefest-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookConarex
+  name: Conarex Company History
+  description: A book about Conarex.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_conarex
+  - type: Paper
+    content: book-conarex-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookPetr
+  name: Petrishchevites Ideas, Goals, and Culture
+  description: A book about Petrishchevites.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_petr
+  - type: Paper
+    content: book-petr-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookSaibasan
+  name: Saibasan Assets
+  description: A book about Saibasan assets.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_saibasan
+  - type: Paper
+    content: book-saibasan-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookUnath1
+  name: Unathi Culture, Part 1
+  description: The first part of a study on Unathi culture.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_unath_1
+  - type: Paper
+    content: book-unath-ptone-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookUnath2
+  name: Unathi Culture, Part 2
+  description: The second part of a study on Unathi culture.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_unath_2
+  - type: Paper
+    content: book-unath-ptwo-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookBSS
+  name: Bluespace Jumps
+  description: A book about bluespace jumps.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_BSS
+  - type: Paper
+    content: book-bss-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookScaf
+  name: Salvage Hardsuit Structure
+  description: A book about salvage hardsuits.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_scaf
+  - type: Paper
+    content: book-scaf-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookMBS1
+  name: Bluespace Beacons, Part 1
+  description: The first part of a book about bluespace beacons.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_MBS1
+  - type: Paper
+    content: book-mbsone-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookMBS2
+  name: Bluespace Beacons, Part 2
+  description: The second part of a book about bluespace beacons.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_MBS2
+  - type: Paper
+    content: book-mbstwo-contents
+
+- type: entity
+  parent: BookLoreBase
+  id: BookImplants
+  name: NanoTrasen Implants
+  description: A book about NanoTrasen implants.
+  components:
+  - type: Sprite
+    layers:
+    - state: book_implant
+  - type: Paper
+    content: book-implants-contents

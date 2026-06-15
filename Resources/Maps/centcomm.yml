@@ -229,6 +229,8 @@ entities:
       bodyType: Dynamic
     - type: Fixtures
       fixtures: {}
+    - type: BecomesStation
+      id: centcomm
     - type: Gravity
       gravityShakeSound: !type:SoundPathSpecifier
         path: Audio/Effects/alert.ogg
