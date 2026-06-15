@@ -659,7 +659,7 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
-- proto: ClothingMaskSexyClown
+- proto: ClothingMaskClown
   entities:
   - uid: 110
     components:

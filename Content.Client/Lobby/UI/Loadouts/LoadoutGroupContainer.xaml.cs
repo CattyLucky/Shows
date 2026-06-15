@@ -223,14 +223,8 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
 
         var cont = new LoadoutContainer(proto, !enabled, reason);
 
-        var itemName = loadoutSystem.GetName(proto);
-        cont.Text = proto.Price > 0
-            ? Loc.GetString("frontier-loadout-item-price",
-                ("item", itemName),
-                ("price", BankSystemExtensions.ToSpesoString(proto.Price)))
-            : itemName;
-
         cont.Select.Pressed = pressed;
+        cont.ForgeSetNameAndPrice(loadoutSystem.GetName(proto), proto.Price, profile.BankBalance, pressed);
 
         cont.Select.OnPressed += args =>
         {

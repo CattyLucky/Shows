@@ -254,10 +254,9 @@ public sealed partial class NcContractSystem : EntitySystem
             return false;
 
         CollectTurnInContainersByGroup(config.RetrievalDestinationId, _turnInContainerQueryScratch);
-        for (var i = 0; i < _turnInContainerQueryScratch.Count; i++)
+        if (_turnInContainerQueryScratch.Count > 0)
         {
-            var container = _turnInContainerQueryScratch[i];
-            target = container;
+            target = _turnInContainerQueryScratch[0];
             _turnInContainerQueryScratch.Clear();
             return true;
         }

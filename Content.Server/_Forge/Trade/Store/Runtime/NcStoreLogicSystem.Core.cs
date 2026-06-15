@@ -15,18 +15,18 @@ public sealed partial class NcStoreLogicSystem : EntitySystem, IStoreRewardExecu
     private static ISawmill Sawmill => Logger.GetSawmill("ncstore-logic");
     private static readonly IComparer<string> OrdinalIds = new OrdinalIdComparer();
 
-    [Dependency] private readonly IComponentFactory _compFactory = default!;
-    [Dependency] private readonly NcStoreCurrencySystem _currency = default!;
-    [Dependency] private readonly EntityStorageSystem _entityStorage = default!;
-    [Dependency] private readonly IEntityManager _ents = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly NcStoreInventorySystem _inventory = default!;
-    [Dependency] private readonly IPrototypeManager _protos = default!;
+    [Dependency] private IComponentFactory _compFactory = default!;
+    [Dependency] private NcStoreCurrencySystem _currency = default!;
+    [Dependency] private EntityStorageSystem _entityStorage = default!;
+    [Dependency] private IEntityManager _ents = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private NcStoreInventorySystem _inventory = default!;
+    [Dependency] private IPrototypeManager _protos = default!;
 
     // Phase M2: used by Buy/Sell flows to random-pick a concrete prototype from matcher.Items.
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
-    [Dependency] private readonly SharedStackSystem _stacks = default!;
+    [Dependency] private SharedStackSystem _stacks = default!;
 
     public override void Initialize()
     {

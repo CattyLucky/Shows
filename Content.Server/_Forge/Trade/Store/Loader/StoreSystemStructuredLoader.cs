@@ -8,12 +8,12 @@ public sealed partial class StoreSystemStructuredLoader : EntitySystem
     private const int MaxRewardPoolTraversalDepth = 6;
     private static ISawmill Sawmill => Logger.GetSawmill("ncstore-loader");
 
-    [Dependency] private readonly NcContractSystem _contracts = default!;
-    [Dependency] private readonly NcStoreCurrencySystem _currency = default!;
+    [Dependency] private NcContractSystem _contracts = default!;
+    [Dependency] private NcStoreCurrencySystem _currency = default!;
 
     private readonly HashSet<EntityUid> _contractsInitialized = new();
     private readonly HashSet<EntityUid> _loadedStores = new();
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     public override void Initialize()
     {

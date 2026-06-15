@@ -318,8 +318,12 @@ namespace Content.Client.Lobby.UI
 
         private void SetDirty()
         {
-            // If it equals default then reset the button.
-            if (Profile == null || _preferencesManager.Preferences?.SelectedCharacter.MemberwiseEquals(Profile) == true)
+            var savedProfile = CharacterSlot is { } slot &&
+                               _preferencesManager.Preferences?.Characters.TryGetValue(slot, out var character) == true
+                ? character
+                : null;
+
+            if (Profile == null || savedProfile?.MemberwiseEquals(Profile) == true)
             {
                 IsDirty = false;
                 return;

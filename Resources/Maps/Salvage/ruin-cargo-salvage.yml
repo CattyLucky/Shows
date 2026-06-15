@@ -1669,7 +1669,7 @@ entities:
     - type: Transform
       pos: -3.557321,-5.3945236
       parent: 16
-- proto: ClothingNeckCloakMiner
+- proto: ClothingNeckCloakGoliathCloak
   entities:
   - uid: 287
     components:
@@ -1811,14 +1811,14 @@ entities:
     - type: Transform
       pos: 7.5,-8.5
       parent: 16
-- proto: FloraRockSolid01
+- proto: FloraRockSolid
   entities:
   - uid: 54
     components:
     - type: Transform
       pos: 5.505496,-8.531757
       parent: 16
-- proto: FloraRockSolid03
+- proto: FloraRockSolid
   entities:
   - uid: 490
     components:
@@ -2738,7 +2738,7 @@ entities:
     - type: Transform
       pos: -5.5,1.5
       parent: 16
-- proto: TorsoSkeleton
+- proto: OrganSkeletonPersonTorso
   entities:
   - uid: 173
     components:

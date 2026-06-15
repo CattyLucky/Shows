@@ -13,7 +13,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Forge.Trade;
 
-public sealed class NcStoreSystem : EntitySystem
+public sealed partial class NcStoreSystem : EntitySystem
 {
     private const float MaxCrateDistance = 4f;
     private const int MaxTransactionCount = 1000;
@@ -23,16 +23,16 @@ public sealed class NcStoreSystem : EntitySystem
     private static readonly SoundSpecifier TransactionSuccessSound =
         new SoundPathSpecifier("/Audio/Effects/Cargo/ping.ogg");
 
-    [Dependency] private readonly AccessReaderSystem _accessReader = default!;
-    [Dependency] private readonly AudioSystem _audio = default!;
-    [Dependency] private readonly IEntityManager _entMan = default!;
-    [Dependency] private readonly NcStoreLogicSystem _logic = default!;
+    [Dependency] private AccessReaderSystem _accessReader = default!;
+    [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private NcStoreLogicSystem _logic = default!;
     private readonly Dictionary<string, TimeSpan> _nextInvalidListingWarningByActor = new(StringComparer.Ordinal);
-    [Dependency] private readonly PopupSystem _popups = default!;
-    [Dependency] private readonly StoreStructuredSystem _storeUi = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private PopupSystem _popups = default!;
+    [Dependency] private StoreStructuredSystem _storeUi = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
 
     public override void Initialize()
     {

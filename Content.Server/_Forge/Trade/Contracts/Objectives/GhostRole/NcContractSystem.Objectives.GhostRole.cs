@@ -7,8 +7,8 @@ namespace Content.Server._Forge.Trade;
 
 public sealed partial class NcContractSystem : EntitySystem
 {
-    [Dependency] private readonly CuffableSystem _contractGhostRoleCuffs = default!;
-    [Dependency] private readonly DamageableSystem _contractGhostRoleDamage = default!;
-    [Dependency] private readonly HumanoidProfileSystem _contractGhostRoleHumanoid = default!;
-    [Dependency] private readonly RottingSystem _contractGhostRoleRotting = default!;
+    [Dependency] private CuffableSystem _contractGhostRoleCuffs = default!;
+    [Dependency] private DamageableSystem _contractGhostRoleDamage = default!;
+    [Dependency] private HumanoidProfileSystem _contractGhostRoleHumanoid = default!;
+    [Dependency] private RottingSystem _contractGhostRoleRotting = default!;
 }

@@ -8,7 +8,7 @@
     MinHeight="780"
     StyleClasses="WindowLarge">
 
-    <BoxContainer Name="Root"
+    <BoxContainer Name="MainRoot"
                   Orientation="Vertical"
                   SeparationOverride="0"
                   StyleClasses="PanelBackgroundBase"

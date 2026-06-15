@@ -2151,7 +2151,7 @@ entities:
     - type: Transform
       pos: -12.508532,-4.9480534
       parent: 179
-- proto: SignChemistry1
+- proto: SignMedical
   entities:
   - uid: 567
     components:
@@ -2614,7 +2614,7 @@ entities:
     - type: Transform
       pos: -12.5,-7.5
       parent: 179
-- proto: VehicleJanicartDestroyed
+- proto: JanitorialTrolley
   entities:
   - uid: 660
     components:
@@ -4360,7 +4360,7 @@ entities:
     - type: Transform
       pos: 2.5,1.5
       parent: 179
-- proto: YellowOxygenTankFilled
+- proto: OxygenTankFilled
   entities:
   - uid: 549
     components:

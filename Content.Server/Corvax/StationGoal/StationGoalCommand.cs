@@ -11,8 +11,8 @@ namespace Content.Server.Corvax.StationGoal;
 [AdminCommand(AdminFlags.Fun)]
 public sealed partial class StationGoalCommand : IConsoleCommand
 {
-    [Dependency] private readonly IEntityManager _entity = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private IEntityManager _entity = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
 
     public string Command => "sendstationgoal";
     public string Description => Loc.GetString("send-station-goal-command-description");

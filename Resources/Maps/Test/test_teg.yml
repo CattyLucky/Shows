@@ -1296,7 +1296,7 @@ entities:
       - 29
     - type: AtmosDevice
       joinedGrid: 2
-- proto: DebugAPC
+- proto: DebugAPCRecharging
   entities:
   - uid: 38
     components:
@@ -1312,7 +1312,7 @@ entities:
       parent: 2
     - type: PowerSupplier
       supplyRampTolerance: 500000
-- proto: DebugSubstation
+- proto: DebugSubstationRecharging
   entities:
   - uid: 34
     components:

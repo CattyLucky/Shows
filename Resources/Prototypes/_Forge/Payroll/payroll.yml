@@ -1,0 +1,198 @@
+- type: forgePayrollConfig
+  id: Default
+  defaultSalary: 1000
+  payInterval: 1200
+
+- type: forgePayrollJobSalary
+  id: Captain
+  salary: 9000
+
+- type: forgePayrollJobSalary
+  id: HeadOfPersonnel
+  salary: 7500
+
+- type: forgePayrollJobSalary
+  id: ChiefEngineer
+  salary: 7000
+
+- type: forgePayrollJobSalary
+  id: ChiefMedicalOfficer
+  salary: 7000
+
+- type: forgePayrollJobSalary
+  id: HeadOfSecurity
+  salary: 7000
+
+- type: forgePayrollJobSalary
+  id: ResearchDirector
+  salary: 7000
+
+- type: forgePayrollJobSalary
+  id: Quartermaster
+  salary: 5500
+
+- type: forgePayrollJobSalary
+  id: Warden
+  salary: 4800
+
+- type: forgePayrollJobSalary
+  id: SecurityOfficer
+  salary: 4200
+
+- type: forgePayrollJobSalary
+  id: Detective
+  salary: 4200
+
+- type: forgePayrollJobSalary
+  id: StationEngineer
+  salary: 4000
+
+- type: forgePayrollJobSalary
+  id: AtmosphericTechnician
+  salary: 4000
+
+- type: forgePayrollJobSalary
+  id: MedicalDoctor
+  salary: 4000
+
+- type: forgePayrollJobSalary
+  id: Paramedic
+  salary: 3800
+
+- type: forgePayrollJobSalary
+  id: Chemist
+  salary: 3800
+
+- type: forgePayrollJobSalary
+  id: Scientist
+  salary: 4000
+
+- type: forgePayrollJobSalary
+  id: SalvageSpecialist
+  salary: 4200
+
+- type: forgePayrollJobSalary
+  id: CargoTechnician
+  salary: 3200
+
+- type: forgePayrollJobSalary
+  id: Botanist
+  salary: 3000
+
+- type: forgePayrollJobSalary
+  id: Chef
+  salary: 3000
+
+- type: forgePayrollJobSalary
+  id: Bartender
+  salary: 3000
+
+- type: forgePayrollJobSalary
+  id: Janitor
+  salary: 2800
+
+- type: forgePayrollJobSalary
+  id: Chaplain
+  salary: 2800
+
+- type: forgePayrollJobSalary
+  id: Lawyer
+  salary: 2800
+
+- type: forgePayrollJobSalary
+  id: Librarian
+  salary: 2600
+
+- type: forgePayrollJobSalary
+  id: Musician
+  salary: 2600
+
+- type: forgePayrollJobSalary
+  id: Reporter
+  salary: 2600
+
+- type: forgePayrollJobSalary
+  id: Psychologist
+  salary: 3200
+
+- type: forgePayrollJobSalary
+  id: ServiceWorker
+  salary: 2400
+
+- type: forgePayrollJobSalary
+  id: Passenger
+  salary: 1500
+
+- type: forgePayrollJobSalary
+  id: TechnicalAssistant
+  salary: 1800
+
+- type: forgePayrollJobSalary
+  id: MedicalIntern
+  salary: 1800
+
+- type: forgePayrollJobSalary
+  id: ResearchAssistant
+  salary: 1800
+
+- type: forgePayrollJobSalary
+  id: SecurityCadet
+  salary: 2200
+
+- type: forgePayrollJobSalary
+  id: Clown
+  salary: 2000
+
+- type: forgePayrollJobSalary
+  id: Mime
+  salary: 2000
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: ForgePayrollConsole
+  name: payroll management console
+  description: Used by command staff to manage crew payroll records.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: crew
+    - map: ["computerLayerKeys"]
+      state: command
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: ForgePayrollConsole
+  - type: ActivatableUI
+    key: enum.ForgePayrollConsoleUiKey.Key
+  - type: ActivatableUIRequiresAccess
+  - type: AccessReader
+    access: [["Captain"], ["HeadOfPersonnel"]]
+  - type: UserInterface
+    interfaces:
+      enum.ForgePayrollConsoleUiKey.Key:
+        type: ForgePayrollConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: Computer
+    board: ForgePayrollComputerCircuitboard
+  - type: PointLight
+    radius: 1.5
+    energy: 4.0
+    color: "#b59b3c"
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: ForgePayrollComputerCircuitboard
+  name: payroll management computer board
+  description: A computer printed circuit board for a payroll management console.
+  components:
+  - type: Sprite
+    state: cpu_command
+  - type: ComputerBoard
+    prototype: ForgePayrollConsole
+  - type: StaticPrice
+    price: 750

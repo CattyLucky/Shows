@@ -11,21 +11,21 @@ public sealed partial class NcStoreInventorySystem : EntitySystem
     private const int UncachedRevision = int.MinValue;
     private static ISawmill Sawmill => Logger.GetSawmill("ncstore-inventory");
 
-    [Dependency] private readonly IComponentFactory _compFactory = default!;
-    [Dependency] private readonly IEntityManager _ents = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private IComponentFactory _compFactory = default!;
+    [Dependency] private IEntityManager _ents = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
     private readonly Dictionary<EntityUid, InventoryCacheEntry> _inventoryCache = new();
 
     private readonly Dictionary<string, string?> _productStackTypeCache = new(StringComparer.Ordinal);
-    [Dependency] private readonly IPrototypeManager _protos = default!;
+    [Dependency] private IPrototypeManager _protos = default!;
     private readonly HashSet<EntityUid> _rebuildOldItemsScratch = new();
 
     private readonly Dictionary<EntityUid, HashSet<EntityUid>> _rootsByItem = new();
     private readonly Queue<EntityUid> _scratchQueue = new();
     private readonly List<EntityUid> _scratchResult = new();
     private readonly HashSet<EntityUid> _scratchVisited = new();
-    [Dependency] private readonly SharedStackSystem _stacks = default!;
-    [Dependency] private readonly TagSystem _tags = default!;
+    [Dependency] private SharedStackSystem _stacks = default!;
+    [Dependency] private TagSystem _tags = default!;
     private readonly List<EntityUid> _takeTransactionDeleteScratch = new();
     private readonly List<(EntityUid Ent, int PreviousCount)> _takeTransactionStackRestoreScratch = new();
     private bool _takeTransactionActive;

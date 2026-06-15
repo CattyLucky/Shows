@@ -1,7 +1,6 @@
 using Content.Server.StationEvents.Events;
 using Content.Shared._Forge.Trade;
 using Content.Shared.Chemistry.EntitySystems;
-using Robust.Shared.ContentPack;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
@@ -15,12 +14,12 @@ public sealed partial class NcContractSystem : EntitySystem
     private const int DepthInProgress = -1;
     private static ISawmill Sawmill => Logger.GetSawmill("nccontracts");
     private readonly HashSet<(EntityUid Store, string ContractId)> _claimInProgress = new();
-    [Dependency] private readonly IComponentFactory _compFactory = default!;
+    [Dependency] private IComponentFactory _compFactory = default!;
     private readonly Dictionary<string, int> _depthCache = new(StringComparer.Ordinal);
-    [Dependency] private readonly NcStoreInventorySystem _inventory = default!;
-    [Dependency] private readonly NcStoreLogicSystem _logic = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
+    [Dependency] private NcStoreInventorySystem _inventory = default!;
+    [Dependency] private NcStoreLogicSystem _logic = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutions = default!;
 
     private readonly Dictionary<(string ProtoId, PrototypeMatchMode MatchMode), int> _progressClaimableByKeyScratch =
         new();
@@ -39,10 +38,9 @@ public sealed partial class NcContractSystem : EntitySystem
 
     private readonly Stack<List<int>> _progressTargetIndexPool = new();
     private readonly Dictionary<EntityUid, int> _progressVirtualStackLeftScratch = new();
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly IResourceManager _resources = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     private readonly Dictionary<QuasiKey, double> _quasiPhase = new();
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _random = default!;
     private readonly List<EntityUid> _scratchCrateItems = new();
     private readonly List<EntityUid> _scratchStoreNearbyItems = new();
     private readonly List<EntityUid> _scratchUserItems = new();

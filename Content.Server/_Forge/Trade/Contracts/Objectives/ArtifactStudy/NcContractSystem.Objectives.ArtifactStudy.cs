@@ -6,8 +6,8 @@ namespace Content.Server._Forge.Trade;
 
 public sealed partial class NcContractSystem : EntitySystem
 {
-    [Dependency] private readonly ForgeArtifactStudyPresetSystem _forgeArtifactStudyPreset = default!;
-    [Dependency] private readonly XenoArtifactSystem _xenoArtifact = default!;
+    [Dependency] private ForgeArtifactStudyPresetSystem _forgeArtifactStudyPreset = default!;
+    [Dependency] private XenoArtifactSystem _xenoArtifact = default!;
 
     private bool TryInitializeArtifactStudyObjective(
         EntityUid store,

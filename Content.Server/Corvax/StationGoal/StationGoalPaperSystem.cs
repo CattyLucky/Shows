@@ -18,13 +18,13 @@ namespace Content.Server.Corvax.StationGoal;
 /// </summary>
 public sealed partial class StationGoalPaperSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly FaxSystem _fax = default!;
-    [Dependency] private readonly NewsSystem _news = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private FaxSystem _fax = default!;
+    [Dependency] private NewsSystem _news = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private StationSystem _station = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
 
     public override void Initialize()
     {

@@ -6,19 +6,19 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._Forge.Trade;
 
-public sealed class NcStoreCurrencySystem : EntitySystem, IStoreCurrencyService
+public sealed partial class NcStoreCurrencySystem : EntitySystem, IStoreCurrencyService
 {
-    [Dependency] private readonly BankSystem _bank = default!;
-    [Dependency] private readonly IEntityManager _ents = default!;
+    [Dependency] private BankSystem _bank = default!;
+    [Dependency] private IEntityManager _ents = default!;
     private readonly Dictionary<string, ICurrencyHandler> _handlerCache = new(StringComparer.Ordinal);
 
     private readonly List<ICurrencyHandler> _handlers = new();
     private bool _handlersInitialized;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly NcStoreInventorySystem _inventory = default!;
-    [Dependency] private readonly IPrototypeManager _protos = default!;
-    [Dependency] private readonly SharedStackSystem _stacks = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private NcStoreInventorySystem _inventory = default!;
+    [Dependency] private IPrototypeManager _protos = default!;
+    [Dependency] private SharedStackSystem _stacks = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
 
 
     public bool TryGetBalance(EntityUid user, in NcInventorySnapshot snapshot, string currencyId, out int balance)

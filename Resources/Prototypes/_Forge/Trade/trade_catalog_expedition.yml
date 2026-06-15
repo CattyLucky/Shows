@@ -12,8 +12,103 @@
     match: Matcher
     price: 100000
 
+- type: storeCategoryStructured
+  id: ForgeExpeditionBuyFieldGear
+  name: "Полевое снаряжение"
+  entries:
+  - proto: BoxSurvival
+    price: 1200
+  - proto: BoxSurvivalEngineering
+    price: 1500
+  - proto: RadioHandheld
+    price: 1200
+  - proto: HandheldGPSBasic
+    price: 2500
+  - proto: FlashlightLantern
+    price: 2500
+  - proto: OreBag
+    price: 5000
+  - proto: ClothingMaskGasExplorer
+    price: 3500
+  - proto: OxygenTankFilled
+    price: 4500
+  - proto: BoxMRE
+    price: 3000
+  - proto: JetpackMiniFilled
+    price: 18000
+
+- type: storeCategoryStructured
+  id: ForgeExpeditionBuyTools
+  name: "Инструменты добычи"
+  entries:
+  - proto: Pickaxe
+    price: 2500
+  - proto: MiningDrill
+    price: 10000
+  - proto: WeaponProtoKineticAccelerator
+    price: 15000
+  - proto: WeaponGrapplingGun
+    price: 12000
+  - proto: WeaponCrusher
+    price: 22000
+  - proto: PowerCellMedium
+    price: 2500
+  - proto: CableApcStack
+    price: 1200
+    amount: 30
+
+- type: storeCategoryStructured
+  id: ForgeExpeditionBuyMedical
+  name: "Медицина"
+  entries:
+  - proto: EmergencyMedipen
+    price: 3000
+  - proto: Brutepack
+    price: 3000
+    amount: 10
+  - proto: Ointment
+    price: 3000
+    amount: 10
+  - proto: MedkitFilled
+    price: 10000
+  - proto: MedkitBruteFilled
+    price: 12000
+  - proto: MedkitBurnFilled
+    price: 12000
+  - proto: MedkitAdvancedFilled
+    price: 25000
+
+- type: storeCategoryStructured
+  id: ForgeExpeditionBuyMaterials
+  name: "Материалы"
+  entries:
+  - proto: CrateMaterialGlass
+    price: 12000
+  - proto: CrateMaterialSteel
+    price: 15000
+  - proto: CrateEngineeringCableBulk
+    price: 18000
+  - proto: CrateMaterialPlasteel
+    price: 30000
+
+- type: storeCategoryStructured
+  id: ForgeExpeditionBuyCrates
+  name: "Ящики снабжения"
+  entries:
+  - proto: CrateEmergencyInternals
+    price: 15000
+  - proto: CrateSalvageEquipment
+    price: 20000
+  - proto: CrateMedicalSupplies
+    price: 22000
+
 - type: storePresetStructured
   id: ForgeExpeditionBuy
   currency: BankCredit
   categories:
+  - ForgeExpeditionBuyFieldGear
+  - ForgeExpeditionBuyTools
+  - ForgeExpeditionBuyMedical
+  - ForgeExpeditionBuyMaterials
+  - ForgeExpeditionBuyCrates
   - ForgeExpeditionBuyWeapons

@@ -7882,14 +7882,14 @@ entities:
       parent: 1
     - type: Fixtures
       fixtures: {}
-- proto: FloraTree03
+- proto: FloraTree
   entities:
   - uid: 2211
     components:
     - type: Transform
       pos: 4.492442,0.04305768
       parent: 1
-- proto: FloraTree04
+- proto: FloraTree
   entities:
   - uid: 2210
     components:
@@ -7929,7 +7929,7 @@ entities:
     - type: Transform
       pos: 7.4771204,20.977934
       parent: 1
-- proto: FoodDonutJellySlugcat
+- proto: FoodDonutJellyScurret
   entities:
   - uid: 2217
     components:
@@ -14086,7 +14086,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 2.5,-24.5
       parent: 1
-- proto: ToySpawner
+- proto: ToySpawner90
   entities:
   - uid: 2071
     components:

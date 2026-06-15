@@ -26,21 +26,21 @@ namespace Content.Server._Forge.Trade;
 
 public sealed partial class NcContractSystem : EntitySystem
 {
-    [Dependency] private readonly AnchorableSystem _anchorable = default!;
-    [Dependency] private readonly MetaDataSystem _contractMeta = default!;
-    [Dependency] private readonly DungeonSystem _dungeon = default!;
-    [Dependency] private readonly MindSystem _contractMind = default!;
-    [Dependency] private readonly GridFixtureSystem _gridFixture = default!;
-    [Dependency] private readonly GhostRoleSystem _ghostRoles = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly IMapManager _mapManager = default!;
-    [Dependency] private readonly PinpointerSystem _pinpointer = default!;
-    [Dependency] private readonly SharedShuttleSystem _shuttle = default!;
-    [Dependency] private readonly TagSystem _tags = default!;
-    [Dependency] private readonly TileSystem _tile = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private AnchorableSystem _anchorable = default!;
+    [Dependency] private MetaDataSystem _contractMeta = default!;
+    [Dependency] private DungeonSystem _dungeon = default!;
+    [Dependency] private MindSystem _contractMind = default!;
+    [Dependency] private GridFixtureSystem _gridFixture = default!;
+    [Dependency] private GhostRoleSystem _ghostRoles = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private IMapManager _mapManager = default!;
+    [Dependency] private PinpointerSystem _pinpointer = default!;
+    [Dependency] private SharedShuttleSystem _shuttle = default!;
+    [Dependency] private TagSystem _tags = default!;
+    [Dependency] private TileSystem _tile = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
 
     private TimeSpan _nextGhostRoleTimeoutCheck = TimeSpan.Zero;
     private TimeSpan _nextHuntPinpointerCheck = TimeSpan.Zero;

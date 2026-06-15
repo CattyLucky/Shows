@@ -11,9 +11,9 @@ namespace Content.Server._Forge.Trade;
 
 public sealed partial class NcContractSystem : EntitySystem
 {
-    [Dependency] private readonly PlayTimeTrackingManager _contractGhostRolePlayTime = default!;
-    [Dependency] private readonly PopupSystem _contractGhostRolePopups = default!;
-    [Dependency] private readonly IServerPreferencesManager _contractGhostRolePrefs = default!;
+    [Dependency] private PlayTimeTrackingManager _contractGhostRolePlayTime = default!;
+    [Dependency] private PopupSystem _contractGhostRolePopups = default!;
+    [Dependency] private IServerPreferencesManager _contractGhostRolePrefs = default!;
 
     private void OnContractGhostRoleGetRequirements(
         EntityUid uid,

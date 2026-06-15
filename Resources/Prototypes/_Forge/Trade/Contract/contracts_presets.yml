@@ -115,6 +115,15 @@
   - type: Retrieval
     id: ForgeRetrievalHardSecureCrate
     weight: 1
+  - type: Retrieval
+    id: ForgeRetrievalEasyBlackbox
+    weight: 1
+  - type: Retrieval
+    id: ForgeRetrievalMediumTriageCache
+    weight: 1
+  - type: Retrieval
+    id: ForgeRetrievalHardRaidVault
+    weight: 1
 
 - type: ncContractOfferPool
   id: ForgeExpeditionFieldOrders
