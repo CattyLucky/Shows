@@ -1,3 +1,4 @@
+using Content.Client._Forge.Trade;
 using Content.Client._Forge.Trade.Theme;
 using Content.Shared._Forge.Trade;
 using Content.Shared.Stacks;
@@ -278,13 +279,18 @@ public sealed partial class NcStoreListingControl : PanelContainer
     private void SetupPriceButton(StoreListingData data, SpriteSystem sprites, IPrototypeManager pm)
     {
         if (data.Mode != StoreMode.Barter &&
-            !string.IsNullOrEmpty(data.CurrencyId) &&
-            pm.TryIndex<StackPrototype>(data.CurrencyId, out var stack) &&
-            pm.TryIndex<EntityPrototype>(stack.Spawn, out var ent) &&
-            sprites.GetPrototypeIcon(ent.ID).Default is { } currencyTex)
+            NcTradeCurrencyNames.TryGetIcon(data.CurrencyId, pm, sprites, out var currencyTex))
+        {
             PriceButton.SetCurrencyIcon(currencyTex);
+            PriceButton.SetCurrencyText(string.Empty);
+        }
         else
+        {
             PriceButton.SetCurrencyIcon(null);
+            PriceButton.SetCurrencyText(data.Mode == StoreMode.Barter
+                ? string.Empty
+                : NcTradeCurrencyNames.GetShortDisplayName(data.CurrencyId, pm));
+        }
 
         if (!_actionsEnabled)
             PriceButton.ToolTip = Loc.GetString("nc-store-only-mass-sell");
@@ -566,11 +572,7 @@ public sealed partial class NcStoreListingControl : PanelContainer
 
     private static string ResolveCurrencyName(string currency, IPrototypeManager pm)
     {
-        if (pm.TryIndex<StackPrototype>(currency, out var stack) &&
-            pm.TryIndex<EntityPrototype>(stack.Spawn, out var entity))
-            return entity.Name;
-
-        return currency;
+        return NcTradeCurrencyNames.GetDisplayName(currency, pm);
     }
 
     private static string? ResolveCostIconPrototype(List<NcBarterCostEntry> entries, IPrototypeManager pm)

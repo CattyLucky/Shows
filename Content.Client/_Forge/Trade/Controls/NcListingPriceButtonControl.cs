@@ -69,6 +69,12 @@ public sealed partial class NcListingPriceButtonControl : Button
         CurrencyIcon.Visible = texture != null;
     }
 
+    public void SetCurrencyText(string text)
+    {
+        CurrencyText.Text = text;
+        CurrencyText.Visible = !string.IsNullOrWhiteSpace(text);
+    }
+
     public void SetPriceText(string text) => PriceLabel.Text = string.IsNullOrWhiteSpace(text) ? "0" : text;
 
     public void SetUnitPriceText(string text)
@@ -129,6 +135,7 @@ public sealed partial class NcListingPriceButtonControl : Button
 
         Label.Visible = false;
         PriceLabel.FontColorOverride = textColor;
+        CurrencyText.FontColorOverride = textColor;
         CurrencyIcon.ModulateSelfOverride = disabled ? DisabledText : Color.White;
     }
 }

@@ -1,3 +1,4 @@
+using Content.Client._Forge.Trade;
 using Content.Client._Forge.Trade.Theme;
 using Content.Client.Message;
 using Content.Shared._Forge.Trade;
@@ -159,7 +160,17 @@ public sealed partial class NcStoreHeaderBar : BoxContainer
                 : new Thickness(0, 0, CurrencyGroupSpacing, 0);
 
             group.Amount.SetMarkup($"[font size=14][color={ColorToHex(_balanceTextColor)}]{amt}[/color][/font]");
-            SetCurrencyIconFor(group.Icon, cur);
+            if (SetCurrencyIconFor(group.Icon, cur))
+            {
+                group.CurrencyText.Visible = false;
+                group.CurrencyText.Text = string.Empty;
+            }
+            else
+            {
+                group.CurrencyText.Text = GetCurrencyFallbackText(cur);
+                group.CurrencyText.Visible = !string.IsNullOrWhiteSpace(group.CurrencyText.Text);
+                group.CurrencyText.FontColorOverride = _balanceTextColor;
+            }
         }
 
         for (var i = ordered.Count; i < _activeGroupCount; i++)
@@ -178,30 +189,41 @@ public sealed partial class NcStoreHeaderBar : BoxContainer
         }
     }
 
-    private void SetCurrencyIconFor(TextureRect target, string? currencyId)
+    private bool SetCurrencyIconFor(TextureRect target, string? currencyId)
     {
         if (string.IsNullOrWhiteSpace(currencyId) || _proto == null || _sprites == null)
         {
             target.Texture = null;
-            return;
+            target.Visible = false;
+            return false;
         }
 
         if (_currencyIconCache.TryGetValue(currencyId, out var cached))
         {
             target.Texture = cached;
-            return;
+            target.Visible = true;
+            return true;
         }
 
-        if (_proto.TryIndex<StackPrototype>(currencyId, out var stackProto) &&
-            _proto.TryIndex<EntityPrototype>(stackProto.Spawn, out var entProto))
+        if (NcTradeCurrencyNames.TryGetIcon(currencyId, _proto, _sprites, out var tex))
         {
-            var tex = _sprites.GetPrototypeIcon(entProto).Default;
             _currencyIconCache[currencyId] = tex;
             target.Texture = tex;
-            return;
+            target.Visible = true;
+            return true;
         }
 
         target.Texture = null;
+        target.Visible = false;
+        return false;
+    }
+
+    private string GetCurrencyFallbackText(string? currencyId)
+    {
+        if (_proto == null)
+            return string.Empty;
+
+        return NcTradeCurrencyNames.GetShortDisplayName(currencyId, _proto);
     }
 
     private void HandleSearchTextChanged()
@@ -233,6 +255,7 @@ public sealed partial class NcStoreHeaderBar : BoxContainer
     {
         public readonly RichTextLabel Amount;
         public readonly BoxContainer Container;
+        public readonly Label CurrencyText;
         public readonly TextureRect Icon;
 
         public CurrencyGroup()
@@ -252,6 +275,15 @@ public sealed partial class NcStoreHeaderBar : BoxContainer
             };
             Amount.AddStyleClass("LabelHeading");
 
+            CurrencyText = new()
+            {
+                HorizontalExpand = false,
+                VerticalAlignment = VAlignment.Center,
+                ClipText = true,
+                MaxWidth = 46
+            };
+            CurrencyText.AddStyleClass("LabelHeading");
+
             Container = new()
             {
                 Orientation = LayoutOrientation.Horizontal,
@@ -262,6 +294,7 @@ public sealed partial class NcStoreHeaderBar : BoxContainer
 
             Container.AddChild(Icon);
             Container.AddChild(Amount);
+            Container.AddChild(CurrencyText);
         }
     }
 }

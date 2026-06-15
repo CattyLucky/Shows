@@ -396,14 +396,7 @@ public sealed partial class NcStoreMenu : FancyWindow
 
     private string CurrencyName(string? currencyId)
     {
-        if (string.IsNullOrWhiteSpace(currencyId))
-            return string.Empty;
-
-        if (_proto.TryIndex<StackPrototype>(currencyId, out var stackProto) &&
-            _proto.TryIndex<EntityPrototype>(stackProto.Spawn, out var currencyEnt))
-            return currencyEnt.Name;
-
-        return currencyId;
+        return NcTradeCurrencyNames.GetDisplayName(currencyId, _proto);
     }
 
     public void CleanupBeforeClose()

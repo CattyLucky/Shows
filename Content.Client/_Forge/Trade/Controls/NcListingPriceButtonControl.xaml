@@ -30,6 +30,14 @@
                MinWidth="24"
                Text="0" />
 
+        <Label Name="CurrencyText"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               ClipText="True"
+               MaxWidth="38"
+               Visible="False"
+               Text="" />
+
         <Label Name="UnitPriceLabel"
                Visible="False"
                Text="" />

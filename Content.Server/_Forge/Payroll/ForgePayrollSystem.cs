@@ -116,19 +116,8 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         if (amount <= 0)
             return false;
 
-        var remaining = amount;
-        if (_bank.TryGetBalance(employee.Owner, out var balance) && balance > 0)
-        {
-            var withdraw = Math.Min(balance, amount);
-            if (withdraw > 0 && _bank.TryBankWithdraw(employee.Owner, withdraw))
-                remaining -= withdraw;
-        }
-
-        if (remaining > 0)
-        {
-            var outstanding = (long) employee.Comp.OutstandingFineAmount + remaining;
-            employee.Comp.OutstandingFineAmount = (int) Math.Min(outstanding, int.MaxValue);
-        }
+        var outstanding = (long) employee.Comp.OutstandingFineAmount + amount;
+        employee.Comp.OutstandingFineAmount = (int) Math.Min(outstanding, int.MaxValue);
 
         employee.Comp.LastFineAmount = amount;
         employee.Comp.LastFineReason = reason;
