@@ -49694,7 +49694,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 11.5,-11.5
       parent: 6350
-- proto: WallmountTelevision
+- proto: ArrivalsShuttleTimer
   entities:
   - uid: 5257
     components:
@@ -49703,6 +49703,8 @@ entities:
       parent: 2
     - type: Fixtures
       fixtures: {}
+- proto: WallmountTelevision
+  entities:
   - uid: 5258
     components:
     - type: Transform
