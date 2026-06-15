@@ -107,7 +107,6 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
 
         payroll.Status = status;
 
-        Dirty(employee, payroll);
         ent.Comp.SelectedEmployee = employee;
         UpdateUi(ent, args.Actor);
     }

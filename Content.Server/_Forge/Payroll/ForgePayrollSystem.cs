@@ -52,21 +52,18 @@ public sealed partial class ForgePayrollSystem : EntitySystem
             if (!_players.TryGetSessionByEntity(uid, out _))
             {
                 payroll.NextPayAt = now + interval;
-                Dirty(uid, payroll);
                 continue;
             }
 
             if (_mobState.IsDead(uid))
             {
                 payroll.NextPayAt = now + interval;
-                Dirty(uid, payroll);
                 continue;
             }
 
             if (!TryPay((uid, payroll), now, interval))
             {
                 payroll.NextPayAt = now + interval;
-                Dirty(uid, payroll);
             }
         }
     }
@@ -91,14 +88,11 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         payroll.LastFineReason = string.Empty;
         payroll.OutstandingFineAmount = 0;
         payroll.NextPayAt = _timing.CurTime + GetPayInterval();
-
-        Dirty(args.Mob, payroll);
     }
 
     private void OnEmployeeRenamed(Entity<ForgePayrollRecordComponent> ent, ref EntityRenamedEvent args)
     {
         ent.Comp.EmployeeName = args.NewName;
-        Dirty(ent);
     }
 
     public bool TryPayNow(Entity<ForgePayrollRecordComponent> employee)
@@ -121,7 +115,6 @@ public sealed partial class ForgePayrollSystem : EntitySystem
 
         employee.Comp.LastFineAmount = amount;
         employee.Comp.LastFineReason = reason;
-        Dirty(employee);
         return true;
     }
 
@@ -138,7 +131,6 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         payroll.LastPaidAmount = amount;
         payroll.LastPaidAt = now;
         payroll.NextPayAt = now + interval;
-        Dirty(uid, payroll);
         return true;
     }
 
