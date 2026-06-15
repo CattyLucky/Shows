@@ -1,0 +1,18 @@
+- type: reagent
+  id: BadTouch
+  name: reagent-name-badTouch
+  parent: BaseAlcohol
+  desc: reagent-desc-badTouch
+  physicalDesc: reagent-physical-desc-bubbly
+  flavor: alcohol
+  color: "#3cc44a"
+  metamorphicSprite:
+    sprite: Corvax/Objects/Consumable/Drinks/badTouch.rsi
+    state: icon_empty
+  metamorphicMaxFillLevels: 6
+  metamorphicFillBaseName: fill-
+  metamorphicChangeColor: false
+  metabolisms:
+    Digestion:
+      metabolites:
+        Ethanol: 0.15

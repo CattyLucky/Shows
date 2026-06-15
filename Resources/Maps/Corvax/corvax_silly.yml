@@ -44321,13 +44321,6 @@ entities:
     - type: Transform
       pos: 7.6471786,-1.5472101
       parent: 2
-- proto: RubberStampSyndicate
-  entities:
-  - uid: 4700
-    components:
-    - type: Transform
-      pos: -19.208584,11.879914
-      parent: 2
 - proto: SalvageFleshSpawner
   entities:
   - uid: 7016
