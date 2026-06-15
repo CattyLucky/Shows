@@ -89,6 +89,7 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         payroll.LastPaidAmount = 0;
         payroll.LastFineAmount = 0;
         payroll.LastFineReason = string.Empty;
+        payroll.OutstandingFineAmount = 0;
         payroll.NextPayAt = _timing.CurTime + GetPayInterval();
 
         Dirty(args.Mob, payroll);
@@ -115,8 +116,19 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         if (amount <= 0)
             return false;
 
-        if (!_bank.TryBankWithdraw(employee.Owner, amount))
-            return false;
+        var remaining = amount;
+        if (_bank.TryGetBalance(employee.Owner, out var balance) && balance > 0)
+        {
+            var withdraw = Math.Min(balance, amount);
+            if (withdraw > 0 && _bank.TryBankWithdraw(employee.Owner, withdraw))
+                remaining -= withdraw;
+        }
+
+        if (remaining > 0)
+        {
+            var outstanding = (long) employee.Comp.OutstandingFineAmount + remaining;
+            employee.Comp.OutstandingFineAmount = (int) Math.Min(outstanding, int.MaxValue);
+        }
 
         employee.Comp.LastFineAmount = amount;
         employee.Comp.LastFineReason = reason;
@@ -127,11 +139,13 @@ public sealed partial class ForgePayrollSystem : EntitySystem
     private bool TryPay(Entity<ForgePayrollRecordComponent> employee, TimeSpan now, TimeSpan interval)
     {
         var (uid, payroll) = employee;
-        var amount = payroll.TotalSalary;
+        var withheld = Math.Min(payroll.TotalSalary, payroll.OutstandingFineAmount);
+        var amount = payroll.TotalSalary - withheld;
 
-        if (!_bank.TryBankDeposit(uid, amount, false))
+        if (amount > 0 && !_bank.TryBankDeposit(uid, amount, false))
             return false;
 
+        payroll.OutstandingFineAmount -= withheld;
         payroll.LastPaidAmount = amount;
         payroll.LastPaidAt = now;
         payroll.NextPayAt = now + interval;
@@ -168,7 +182,7 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         return false;
     }
 
-    private string GetDepartmentName(string jobId)
+    public string GetDepartmentName(string jobId)
     {
         if (_jobs.TryGetPrimaryDepartment(jobId, out var primary))
             return Loc.GetString(primary.Name);

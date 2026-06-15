@@ -31,8 +31,6 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: Pilot
-  - type: PresetIdCard
-    job: Pilot
 
 - type: entity
   parent: IDCardStandard
@@ -49,5 +47,3 @@
     - sprite: *icon-rsi
       offset: *icon-offset
       state: Magistrate
-  - type: PresetIdCard
-    job: Magistrate

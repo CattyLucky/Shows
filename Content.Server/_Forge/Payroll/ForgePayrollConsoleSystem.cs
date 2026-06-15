@@ -1,11 +1,14 @@
+using System.Linq;
 using Content.Server._Forge.Payroll.Components;
 using Content.Server.Popups;
 using Content.Shared._Forge.Payroll;
 using Content.Shared.Access.Systems;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared.Popups;
+using Content.Shared.Roles;
 using Robust.Server.GameObjects;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._Forge.Payroll;
@@ -20,6 +23,7 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private ISharedPlayerManager _players = default!;
     [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private TimeSpan _nextUiUpdate;
 
@@ -88,8 +92,13 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
             !TryComp<ForgePayrollRecordComponent>(employee, out var payroll))
             return;
 
-        payroll.JobTitle = Sanitize(args.JobTitle, 64);
-        payroll.Department = Sanitize(args.Department, 48);
+        if (!_prototypes.TryIndex<JobPrototype>(Sanitize(args.JobPrototype, 64), out var job) ||
+            !job.OverrideConsoleVisibility.GetValueOrDefault(job.SetPreference))
+            return;
+
+        payroll.JobPrototype = job.ID;
+        payroll.JobTitle = Sanitize(job.LocalizedName, 64);
+        payroll.Department = Sanitize(_payroll.GetDepartmentName(job.ID), 48);
         payroll.BaseSalary = Math.Clamp(args.BaseSalary, 0, 250000);
         payroll.Adjustment = Math.Clamp(args.Adjustment, -250000, 250000);
         var status = NormalizeStatus(args.Status);
@@ -170,6 +179,7 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
     {
         var canEdit = CanEdit(actor, ent.Owner);
         var records = BuildRecords();
+        var jobOptions = BuildJobOptions();
         var selectedNet = ent.Comp.SelectedEmployee is { } selectedEmployee
             ? GetNetEntity(selectedEmployee)
             : (NetEntity?) null;
@@ -187,7 +197,7 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
 
         _ui.SetUiState(ent.Owner,
             ForgePayrollConsoleUiKey.Key,
-            new ForgePayrollConsoleState(records, selectedNet, canEdit, (int) _payroll.GetPayInterval().TotalSeconds));
+            new ForgePayrollConsoleState(records, jobOptions, selectedNet, canEdit, (int) _payroll.GetPayInterval().TotalSeconds));
     }
 
     private List<ForgePayrollRecordState> BuildRecords()
@@ -216,11 +226,33 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
                 secondsToNextPay,
                 payroll.LastPaidAmount,
                 payroll.LastFineAmount,
-                payroll.LastFineReason));
+                payroll.LastFineReason,
+                payroll.OutstandingFineAmount));
         }
 
         records.Sort((a, b) => string.Compare(a.EmployeeName, b.EmployeeName, StringComparison.CurrentCulture));
         return records;
+    }
+
+    private List<ForgePayrollJobOptionState> BuildJobOptions()
+    {
+        var jobs = _prototypes.EnumeratePrototypes<JobPrototype>()
+            .Where(job => job.OverrideConsoleVisibility.GetValueOrDefault(job.SetPreference))
+            .ToList();
+
+        jobs.Sort((a, b) => string.Compare(a.LocalizedName, b.LocalizedName, StringComparison.CurrentCulture));
+
+        var options = new List<ForgePayrollJobOptionState>(jobs.Count);
+        foreach (var job in jobs)
+        {
+            options.Add(new ForgePayrollJobOptionState(
+                job.ID,
+                job.LocalizedName,
+                _payroll.GetDepartmentName(job.ID),
+                _payroll.GetDefaultSalary(job.ID)));
+        }
+
+        return options;
     }
 
     private bool IsVisiblePayrollEmployee(EntityUid employee)

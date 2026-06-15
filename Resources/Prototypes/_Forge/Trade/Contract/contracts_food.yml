@@ -167,3 +167,37 @@
   - type: Pool
     pool: ForgeExpeditionRewardFoodElite
     count: { min: 1, max: 3 }
+
+- type: ncSupplyContract
+  id: ForgeFoodEasyCaesarSalads
+  name: "Свежие салаты для брифинга"
+  description: "Соберите партию салатов Цезарь для короткого брифинга перед вылетом. Половину блюд вернут как обед для команды, но повторно сдать их нельзя."
+  icon: FoodSaladCaesar
+  returnFraction: 0.5
+  targets:
+  - prototype: FoodSaladCaesar
+    count: 3
+  reward:
+  - type: Currency
+    currency: BankCredit
+    count: 12000
+  - type: Pool
+    pool: ForgeExpeditionRewardFoodBasic
+    count: { min: 1, max: 3 }
+
+- type: ncSupplyContract
+  id: ForgeFoodMediumChocolateCakes
+  name: "Шоколадный резерв"
+  description: "Испеките шоколадные торты для резервной команды снабжения. Половину блюд вернут как обед для команды, но повторно сдать их нельзя."
+  icon: FoodCakeChocolate
+  returnFraction: 0.5
+  targets:
+  - prototype: FoodCakeChocolate
+    count: 2
+  reward:
+  - type: Currency
+    currency: BankCredit
+    count: 32000
+  - type: Pool
+    pool: ForgeExpeditionRewardFoodAdvanced
+    count: { min: 1, max: 3 }

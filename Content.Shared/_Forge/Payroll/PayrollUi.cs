@@ -20,20 +20,44 @@ public enum ForgePayrollEmploymentStatus : byte
 public sealed class ForgePayrollConsoleState : BoundUserInterfaceState
 {
     public readonly List<ForgePayrollRecordState> Records;
+    public readonly List<ForgePayrollJobOptionState> JobOptions;
     public readonly NetEntity? Selected;
     public readonly bool CanEdit;
     public readonly int PayIntervalSeconds;
 
     public ForgePayrollConsoleState(
         List<ForgePayrollRecordState> records,
+        List<ForgePayrollJobOptionState> jobOptions,
         NetEntity? selected,
         bool canEdit,
         int payIntervalSeconds)
     {
         Records = records;
+        JobOptions = jobOptions;
         Selected = selected;
         CanEdit = canEdit;
         PayIntervalSeconds = payIntervalSeconds;
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed class ForgePayrollJobOptionState
+{
+    public readonly string JobPrototype;
+    public readonly string JobTitle;
+    public readonly string Department;
+    public readonly int BaseSalary;
+
+    public ForgePayrollJobOptionState(
+        string jobPrototype,
+        string jobTitle,
+        string department,
+        int baseSalary)
+    {
+        JobPrototype = jobPrototype;
+        JobTitle = jobTitle;
+        Department = department;
+        BaseSalary = baseSalary;
     }
 }
 
@@ -53,6 +77,7 @@ public sealed class ForgePayrollRecordState
     public readonly int LastPaidAmount;
     public readonly int LastFineAmount;
     public readonly string LastFineReason;
+    public readonly int OutstandingFineAmount;
 
     public ForgePayrollRecordState(
         NetEntity entity,
@@ -67,7 +92,8 @@ public sealed class ForgePayrollRecordState
         int secondsToNextPay,
         int lastPaidAmount,
         int lastFineAmount,
-        string lastFineReason)
+        string lastFineReason,
+        int outstandingFineAmount)
     {
         Entity = entity;
         EmployeeName = employeeName;
@@ -82,6 +108,7 @@ public sealed class ForgePayrollRecordState
         LastPaidAmount = lastPaidAmount;
         LastFineAmount = lastFineAmount;
         LastFineReason = lastFineReason;
+        OutstandingFineAmount = outstandingFineAmount;
     }
 }
 
@@ -94,15 +121,13 @@ public sealed class ForgePayrollSelectRecordMessage(NetEntity employee) : BoundU
 [Serializable, NetSerializable]
 public sealed class ForgePayrollUpdateRecordMessage(
     NetEntity employee,
-    string jobTitle,
-    string department,
+    string jobPrototype,
     int baseSalary,
     int adjustment,
     ForgePayrollEmploymentStatus status) : BoundUserInterfaceMessage
 {
     public readonly NetEntity Employee = employee;
-    public readonly string JobTitle = jobTitle;
-    public readonly string Department = department;
+    public readonly string JobPrototype = jobPrototype;
     public readonly int BaseSalary = baseSalary;
     public readonly int Adjustment = adjustment;
     public readonly ForgePayrollEmploymentStatus Status = status;

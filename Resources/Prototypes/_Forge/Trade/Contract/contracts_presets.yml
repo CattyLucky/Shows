@@ -45,6 +45,9 @@
     id: ForgeFoodEasyHanamiDango
     weight: 4
   - type: Supply
+    id: ForgeFoodEasyCaesarSalads
+    weight: 4
+  - type: Supply
     id: ForgeFoodMediumPizzaMargherita
     weight: 2
   - type: Supply
@@ -52,6 +55,9 @@
     weight: 2
   - type: Supply
     id: ForgeFoodMediumOnigiri
+    weight: 2
+  - type: Supply
+    id: ForgeFoodMediumChocolateCakes
     weight: 2
   - type: Supply
     id: ForgeFoodHardCubanCarp

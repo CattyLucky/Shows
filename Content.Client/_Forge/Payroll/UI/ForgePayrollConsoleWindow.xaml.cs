@@ -11,18 +11,19 @@ namespace Content.Client._Forge.Payroll.UI;
 public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
 {
     public event Action<NetEntity>? OnRecordSelected;
-    public event Action<NetEntity, string, string, int, int, ForgePayrollEmploymentStatus>? OnSavePressed;
+    public event Action<NetEntity, string, int, int, ForgePayrollEmploymentStatus>? OnSavePressed;
     public event Action<NetEntity>? OnPayNowPressed;
     public event Action<NetEntity, int, string>? OnFinePressed;
 
     private bool _isPopulating;
     private NetEntity? _selected;
     private NetEntity? _lastPopulatedRecord;
-    private string? _lastJobTitle;
-    private string? _lastDepartment;
+    private string? _lastJobPrototype;
     private ForgePayrollEmploymentStatus? _lastStatus;
     private int? _lastBaseSalary;
     private int? _lastAdjustment;
+    private readonly List<string> _jobOptionIds = new();
+    private readonly Dictionary<string, ForgePayrollJobOptionState> _jobOptions = new();
 
     public ForgePayrollConsoleWindow()
     {
@@ -43,8 +44,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
                 _selected = null;
         };
 
-        JobTitleLineEdit.IsValid = value => value.Length <= 64;
-        DepartmentLineEdit.IsValid = value => value.Length <= 48;
         BaseSalarySpinBox.IsValid = value => value is >= 0 and <= 250000;
         AdjustmentSpinBox.IsValid = value => value is >= -250000 and <= 250000;
         FineAmountSpinBox.IsValid = value => value is >= 1 and <= 250000;
@@ -56,6 +55,11 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         }
 
         StatusOptionButton.OnItemSelected += args => StatusOptionButton.SelectId(args.Id);
+        JobOptionButton.OnItemSelected += args =>
+        {
+            args.Button.SelectId(args.Id);
+            ApplySelectedJobOption();
+        };
 
         BaseSalarySpinBox.ValueChanged += _ => UpdateTotalLabel();
         AdjustmentSpinBox.ValueChanged += _ => UpdateTotalLabel();
@@ -67,8 +71,7 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
 
             OnSavePressed?.Invoke(
                 employee,
-                JobTitleLineEdit.Text,
-                DepartmentLineEdit.Text,
+                GetSelectedJobPrototype(),
                 BaseSalarySpinBox.Value,
                 AdjustmentSpinBox.Value,
                 (ForgePayrollEmploymentStatus) StatusOptionButton.SelectedId);
@@ -103,8 +106,34 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             _selected = null;
         }
 
+        PopulateJobOptions(state.JobOptions);
         PopulateRecords(state);
         PopulateEditor(selectedRecord, state.CanEdit);
+    }
+
+    private void PopulateJobOptions(IReadOnlyList<ForgePayrollJobOptionState> jobOptions)
+    {
+        var selectedJob = GetSelectedJobPrototype();
+
+        _isPopulating = true;
+        JobOptionButton.Clear();
+        _jobOptionIds.Clear();
+        _jobOptions.Clear();
+
+        foreach (var option in jobOptions)
+        {
+            var id = _jobOptionIds.Count;
+            _jobOptionIds.Add(option.JobPrototype);
+            _jobOptions[option.JobPrototype] = option;
+            JobOptionButton.AddItem(Loc.GetString("forge-payroll-console-job-option",
+                ("job", option.JobTitle),
+                ("department", option.Department)), id);
+        }
+
+        if (!string.IsNullOrWhiteSpace(selectedJob))
+            TrySelectJob(selectedJob);
+
+        _isPopulating = false;
     }
 
     private void PopulateRecords(ForgePayrollConsoleState state)
@@ -112,6 +141,7 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         _isPopulating = true;
         RecordsList.Clear();
         RecordsList.ClearSelected();
+        CrewCountLabel.Text = Loc.GetString("forge-payroll-console-crew-count", ("count", state.Records.Count));
 
         foreach (var record in state.Records)
         {
@@ -137,12 +167,12 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             : Loc.GetString("forge-payroll-console-no-selection");
 
         EmployeeNameLabel.Text = record?.EmployeeName ?? string.Empty;
-        JobPrototypeLabel.Text = record?.JobPrototype ?? string.Empty;
 
         if (record == null)
         {
-            JobTitleLineEdit.Text = string.Empty;
-            DepartmentLineEdit.Text = string.Empty;
+            JobPrototypeLabel.Text = string.Empty;
+            DepartmentLabel.Text = string.Empty;
+            JobOptionButton.TrySelect(0);
             StatusOptionButton.TrySelectId((int) ForgePayrollEmploymentStatus.Working);
             BaseSalarySpinBox.OverrideValue(0);
             AdjustmentSpinBox.OverrideValue(0);
@@ -152,17 +182,13 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         }
         else
         {
-            var jobTitleDirty = _lastJobTitle != null && JobTitleLineEdit.Text != _lastJobTitle;
-            var departmentDirty = _lastDepartment != null && DepartmentLineEdit.Text != _lastDepartment;
+            var jobDirty = _lastJobPrototype != null && GetSelectedJobPrototype() != _lastJobPrototype;
             var statusDirty = _lastStatus != null && StatusOptionButton.SelectedId != (int) _lastStatus.Value;
             var baseSalaryDirty = _lastBaseSalary != null && BaseSalarySpinBox.Value != _lastBaseSalary.Value;
             var adjustmentDirty = _lastAdjustment != null && AdjustmentSpinBox.Value != _lastAdjustment.Value;
 
-            if (selectedChanged || !jobTitleDirty)
-                JobTitleLineEdit.Text = record.JobTitle;
-
-            if (selectedChanged || !departmentDirty)
-                DepartmentLineEdit.Text = record.Department;
+            if (selectedChanged || !jobDirty)
+                TrySelectJob(record.JobPrototype);
 
             if (selectedChanged || !statusDirty)
                 StatusOptionButton.TrySelectId((int) record.Status);
@@ -180,11 +206,20 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             }
 
             _lastPopulatedRecord = record.Entity;
-            _lastJobTitle = record.JobTitle;
-            _lastDepartment = record.Department;
+            _lastJobPrototype = record.JobPrototype;
             _lastStatus = record.Status;
             _lastBaseSalary = record.BaseSalary;
             _lastAdjustment = record.Adjustment;
+
+            if (!jobDirty)
+            {
+                JobPrototypeLabel.Text = record.JobPrototype;
+                DepartmentLabel.Text = record.Department;
+            }
+            else
+            {
+                ApplySelectedJobOption(false);
+            }
         }
 
         NextPayLabel.Text = record == null
@@ -201,9 +236,11 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             : Loc.GetString("forge-payroll-console-last-fine-value",
                 ("amount", record.LastFineAmount),
                 ("reason", fineReason));
+        OutstandingFineLabel.Text = record == null
+            ? string.Empty
+            : Loc.GetString("forge-payroll-console-total-value", ("amount", record.OutstandingFineAmount));
 
-        JobTitleLineEdit.Editable = hasRecord && canEdit;
-        DepartmentLineEdit.Editable = hasRecord && canEdit;
+        JobOptionButton.Disabled = !hasRecord || !canEdit || JobOptionButton.ItemCount <= 0;
         StatusOptionButton.Disabled = !hasRecord || !canEdit;
         BaseSalarySpinBox.LineEditDisabled = !hasRecord || !canEdit;
         BaseSalarySpinBox.SetButtonDisabled(!hasRecord || !canEdit);
@@ -220,11 +257,43 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         UpdateTotalLabel();
     }
 
+    private void ApplySelectedJobOption(bool updateBaseSalary = true)
+    {
+        if (_isPopulating || !_jobOptions.TryGetValue(GetSelectedJobPrototype(), out var option))
+            return;
+
+        JobPrototypeLabel.Text = option.JobPrototype;
+        DepartmentLabel.Text = option.Department;
+
+        if (updateBaseSalary)
+            BaseSalarySpinBox.OverrideValue(option.BaseSalary);
+
+        UpdateTotalLabel();
+    }
+
+    private bool TrySelectJob(string jobPrototype)
+    {
+        var index = _jobOptionIds.IndexOf(jobPrototype);
+        if (index < 0)
+            return false;
+
+        return JobOptionButton.TrySelectId(index);
+    }
+
+    private string GetSelectedJobPrototype()
+    {
+        if (JobOptionButton.ItemCount <= 0 ||
+            JobOptionButton.SelectedId < 0 ||
+            JobOptionButton.SelectedId >= _jobOptionIds.Count)
+            return _lastJobPrototype ?? string.Empty;
+
+        return _jobOptionIds[JobOptionButton.SelectedId];
+    }
+
     private void ClearEditorTracking()
     {
         _lastPopulatedRecord = null;
-        _lastJobTitle = null;
-        _lastDepartment = null;
+        _lastJobPrototype = null;
         _lastStatus = null;
         _lastBaseSalary = null;
         _lastAdjustment = null;

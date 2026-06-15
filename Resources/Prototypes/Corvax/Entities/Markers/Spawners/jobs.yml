@@ -3,8 +3,6 @@
   parent: SpawnPointJobBase
   name: pilot
   components:
-  - type: SpawnPoint
-    job_id: Pilot
   - type: Sprite
     layers:
     - state: green
@@ -49,8 +47,6 @@
   parent: SpawnPointJobBase
   name: seniorphysician
   components:
-  - type: SpawnPoint
-    job_id: SeniorPhysician
   - type: Sprite
     layers:
       - state: green
@@ -61,8 +57,6 @@
   parent: SpawnPointJobBase
   name: seniorresearcher
   components:
-  - type: SpawnPoint
-    job_id: SeniorResearcher
   - type: Sprite
     layers:
       - state: green
@@ -73,8 +67,6 @@
   parent: SpawnPointJobBase
   name: seniorofficer
   components:
-  - type: SpawnPoint
-    job_id: SeniorOfficer
   - type: Sprite
     layers:
       - state: green

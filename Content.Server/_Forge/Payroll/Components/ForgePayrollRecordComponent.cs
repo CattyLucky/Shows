@@ -41,5 +41,8 @@ public sealed partial class ForgePayrollRecordComponent : Component
     [DataField]
     public string LastFineReason = string.Empty;
 
+    [DataField]
+    public int OutstandingFineAmount;
+
     public int TotalSalary => Math.Max(0, BaseSalary + Adjustment);
 }

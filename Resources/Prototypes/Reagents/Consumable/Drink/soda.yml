@@ -24,6 +24,16 @@
         type: Remove
 
 - type: reagent
+  id: Kvass
+  name: reagent-name-kvass
+  parent: BaseSoda
+  desc: reagent-desc-kvass
+  physicalDesc: reagent-physical-desc-fizzy
+  flavor: soda
+  color: "#5b321f"
+  recognizable: true
+
+- type: reagent
   id: RoyRogers
   name: reagent-name-roy-rogers
   parent: BaseSoda

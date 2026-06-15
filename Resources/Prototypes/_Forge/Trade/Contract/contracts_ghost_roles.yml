@@ -35,10 +35,6 @@
   components:
   - type: RandomHumanoidAppearance
     randomizeName: false
-    sex: Female
-    gender: Female
-    age: 22
-    skinColor: "#FFFFFF"
   - type: Loadout
     prototypes: [ForgeGhostYavassaBiilaGear]
 
