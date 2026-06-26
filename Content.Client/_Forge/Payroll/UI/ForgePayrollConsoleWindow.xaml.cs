@@ -27,7 +27,7 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
     private static readonly Color ButtonText = Color.FromHex("#F1EEE6");
 
     public event Action<NetEntity>? OnRecordSelected;
-    public event Action<NetEntity, string, int, int, int, ForgePayrollEmploymentStatus>? OnSavePressed;
+    public event Action<NetEntity, string, int, int, ForgePayrollEmploymentStatus>? OnSavePressed;
     public event Action<NetEntity>? OnPayNowPressed;
     public event Action<NetEntity, int, string>? OnFinePressed;
 
@@ -38,7 +38,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
     private ForgePayrollEmploymentStatus? _lastStatus;
     private int? _lastBaseSalary;
     private int? _lastAdjustment;
-    private int? _lastBankBalance;
     private ForgePayrollConsoleState? _lastState;
     private string _recordFilter = string.Empty;
     private readonly List<string> _jobOptionIds = new();
@@ -66,7 +65,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
 
         BaseSalarySpinBox.IsValid = value => value is >= 0 and <= 250000;
         AdjustmentSpinBox.IsValid = value => value is >= -250000 and <= 250000;
-        BankBalanceSpinBox.IsValid = value => value is >= 0 and <= 1000000000;
         FineAmountSpinBox.IsValid = value => value is >= 1 and <= 250000;
         FineReasonLineEdit.IsValid = value => value.Length <= 96;
         CrewSearchLineEdit.IsValid = value => value.Length <= 64;
@@ -102,7 +100,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
                 GetSelectedJobPrototype(),
                 BaseSalarySpinBox.Value,
                 AdjustmentSpinBox.Value,
-                BankBalanceSpinBox.Value,
                 (ForgePayrollEmploymentStatus) StatusOptionButton.SelectedId);
         };
 
@@ -220,7 +217,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             StatusOptionButton.TrySelectId((int) ForgePayrollEmploymentStatus.Working);
             BaseSalarySpinBox.OverrideValue(0);
             AdjustmentSpinBox.OverrideValue(0);
-            BankBalanceSpinBox.OverrideValue(0);
             FineAmountSpinBox.OverrideValue(1);
             FineReasonLineEdit.Text = string.Empty;
             ClearEditorTracking();
@@ -231,7 +227,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             var statusDirty = _lastStatus != null && StatusOptionButton.SelectedId != (int) _lastStatus.Value;
             var baseSalaryDirty = _lastBaseSalary != null && BaseSalarySpinBox.Value != _lastBaseSalary.Value;
             var adjustmentDirty = _lastAdjustment != null && AdjustmentSpinBox.Value != _lastAdjustment.Value;
-            var bankBalanceDirty = _lastBankBalance != null && BankBalanceSpinBox.Value != _lastBankBalance.Value;
 
             if (selectedChanged || !jobDirty)
                 TrySelectJob(record.JobPrototype);
@@ -245,9 +240,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             if (selectedChanged || !adjustmentDirty)
                 AdjustmentSpinBox.OverrideValue(record.Adjustment);
 
-            if (selectedChanged || !bankBalanceDirty)
-                BankBalanceSpinBox.OverrideValue(record.BankBalance);
-
             if (selectedChanged)
             {
                 FineAmountSpinBox.OverrideValue(100);
@@ -259,7 +251,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
             _lastStatus = record.Status;
             _lastBaseSalary = record.BaseSalary;
             _lastAdjustment = record.Adjustment;
-            _lastBankBalance = record.BankBalance;
 
             if (!jobDirty)
             {
@@ -304,8 +295,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         BaseSalarySpinBox.SetButtonDisabled(!hasRecord || !canEdit);
         AdjustmentSpinBox.LineEditDisabled = !hasRecord || !canEdit;
         AdjustmentSpinBox.SetButtonDisabled(!hasRecord || !canEdit);
-        BankBalanceSpinBox.LineEditDisabled = !hasRecord || !canEdit;
-        BankBalanceSpinBox.SetButtonDisabled(!hasRecord || !canEdit);
         FineAmountSpinBox.LineEditDisabled = !hasRecord || !canEdit;
         FineAmountSpinBox.SetButtonDisabled(!hasRecord || !canEdit);
         FineReasonLineEdit.Editable = hasRecord && canEdit;
@@ -326,7 +315,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
                record.JobTitle.Contains(_recordFilter, StringComparison.CurrentCultureIgnoreCase) ||
                record.JobPrototype.Contains(_recordFilter, StringComparison.CurrentCultureIgnoreCase) ||
                record.Department.Contains(_recordFilter, StringComparison.CurrentCultureIgnoreCase) ||
-               record.BankBalance.ToString().Contains(_recordFilter, StringComparison.CurrentCultureIgnoreCase) ||
                GetStatusName(record.Status).Contains(_recordFilter, StringComparison.CurrentCultureIgnoreCase);
     }
 
@@ -370,7 +358,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         _lastStatus = null;
         _lastBaseSalary = null;
         _lastAdjustment = null;
-        _lastBankBalance = null;
     }
 
     private void UpdateTotalLabel()
@@ -411,7 +398,6 @@ public sealed partial class ForgePayrollConsoleWindow : DefaultWindow
         StyleLineEdit(FineReasonLineEdit);
         StyleSpinBox(BaseSalarySpinBox);
         StyleSpinBox(AdjustmentSpinBox);
-        StyleSpinBox(BankBalanceSpinBox);
         StyleSpinBox(FineAmountSpinBox);
         StyleOptionButton(JobOptionButton);
         StyleOptionButton(StatusOptionButton);

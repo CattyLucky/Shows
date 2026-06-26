@@ -24,6 +24,18 @@
                HorizontalExpand="True"
                ClipText="True"/>
         <customControls:VSeparator/>
+        <BoxContainer Name="BankBalanceBox"
+                      Orientation="Horizontal"
+                      SizeFlagsStretchRatio="2"
+                      HorizontalExpand="True"
+                      SeparationOverride="3">
+            <SpinBox Name="BankBalanceSpinBox"
+                     HorizontalExpand="True"/>
+            <Button Name="BankBalanceSaveButton"
+                    Text="{Loc player-tab-bank-balance-save}"
+                    MinWidth="36"/>
+        </BoxContainer>
+        <customControls:VSeparator/>
         <Label Name="OverallPlaytimeLabel"
                SizeFlagsStretchRatio="1"
                HorizontalExpand="True"

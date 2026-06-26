@@ -1,7 +1,6 @@
 using System.Linq;
 using Content.Server._Forge.Access.Systems;
 using Content.Server._Forge.Payroll.Components;
-using Content.Server._NF.Bank;
 using Content.Server.Popups;
 using Content.Shared._Forge.Payroll;
 using Content.Shared.Access.Systems;
@@ -27,7 +26,6 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private JobReassignmentSystem _reassignment = default!;
-    [Dependency] private BankSystem _bank = default!;
 
     private TimeSpan _nextUiUpdate;
 
@@ -93,20 +91,12 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
         var employee = GetEntity(args.Employee);
 
         if (!IsVisiblePayrollEmployee(employee) ||
-            !TryComp<ForgePayrollRecordComponent>(employee, out var payroll) ||
-            !TryComp<BankAccountComponent>(employee, out var bank))
+            !TryComp<ForgePayrollRecordComponent>(employee, out var payroll))
             return;
 
         if (!_prototypes.TryIndex<JobPrototype>(Sanitize(args.JobPrototype, 64), out var job) ||
             !job.OverrideConsoleVisibility.GetValueOrDefault(job.SetPreference))
             return;
-
-        var bankBalance = Math.Clamp(args.BankBalance, 0, 1000000000);
-        if (bank.Balance != bankBalance &&
-            !_bank.TrySetBalance(employee, bankBalance))
-        {
-            return;
-        }
 
         if (payroll.JobPrototype != job.ID &&
             !_reassignment.TryApplyToEntity(employee, job.ID, actor: args.Actor, ignoreDemographicRequirements: true))
@@ -221,7 +211,7 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
         var records = new List<ForgePayrollRecordState>();
         var query = EntityQueryEnumerator<ForgePayrollRecordComponent, BankAccountComponent>();
 
-        while (query.MoveNext(out var uid, out var payroll, out var bank))
+        while (query.MoveNext(out var uid, out var payroll, out _))
         {
             if (!_players.TryGetSessionByEntity(uid, out _))
                 continue;
@@ -237,7 +227,6 @@ public sealed partial class ForgePayrollConsoleSystem : EntitySystem
                 payroll.BaseSalary,
                 payroll.Adjustment,
                 payroll.TotalSalary,
-                bank.Balance,
                 payroll.Status,
                 secondsToNextPay,
                 payroll.LastPaidAmount,

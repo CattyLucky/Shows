@@ -4,12 +4,14 @@ using Content.Server.Chat.Managers;
 using Content.Server.GameTicking;
 using Content.Server.Hands.Systems;
 using Content.Server.Mind;
+using Content.Server._NF.Bank;
 using Content.Server.Players.PlayTimeTracking;
 using Content.Server.Popups;
 using Content.Server.StationRecords.Systems;
 using Content.Shared.Administration;
 using Content.Shared.Administration.Events;
 using Content.Shared.CCVar;
+using Content.Shared._NF.Bank.Components;
 using Content.Shared.Forensics.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.Components;
@@ -55,6 +57,7 @@ public sealed partial class AdminSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private StationRecordsSystem _stationRecords = default!;
     [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private BankSystem _bank = default!;
 
     private readonly Dictionary<NetUserId, PlayerInfo> _playerList = new();
 
@@ -91,6 +94,8 @@ public sealed partial class AdminSystem : EntitySystem
 
         SubscribeLocalEvent<ActorComponent, EntityRenamedEvent>(OnPlayerRenamed);
         SubscribeLocalEvent<ActorComponent, IdentityChangedEvent>(OnIdentityChanged);
+
+        SubscribeNetworkEvent<SetPlayerBankBalanceEvent>(OnSetPlayerBankBalance);
     }
 
     private void OnRoundRestartCleanup(RoundRestartCleanupEvent ev)
@@ -264,6 +269,13 @@ public sealed partial class AdminSystem : EntitySystem
             overallPlaytime = playTime;
         }
 
+        var bankBalance = cachedInfo?.BankBalance;
+        if (session?.AttachedEntity is { } attached &&
+            TryComp<BankAccountComponent>(attached, out var bank))
+        {
+            bankBalance = bank.Balance;
+        }
+
         return new PlayerInfo(
             name,
             entityName,
@@ -277,7 +289,26 @@ public sealed partial class AdminSystem : EntitySystem
             data.UserId,
             connected,
             _roundActivePlayers.Contains(data.UserId),
-            overallPlaytime);
+            overallPlaytime,
+            bankBalance);
+    }
+
+    private void OnSetPlayerBankBalance(SetPlayerBankBalanceEvent ev, EntitySessionEventArgs args)
+    {
+        if (!_adminManager.HasAdminFlag(args.SenderSession, AdminFlags.Admin))
+            return;
+
+        if (!_playerManager.TryGetSessionById(ev.UserId, out var target) ||
+            target.AttachedEntity is not { } entity)
+        {
+            return;
+        }
+
+        var balance = Math.Clamp(ev.Balance, 0, 1000000000);
+        if (!_bank.TrySetBalance(entity, balance))
+            return;
+
+        UpdatePlayerList(target);
     }
 
     private void OnPanicBunkerChanged(bool enabled)

@@ -18,7 +18,6 @@ forge-payroll-console-payroll-section = Зарплата
 forge-payroll-console-base-salary = Ставка:
 forge-payroll-console-adjustment = Бонус:
 forge-payroll-console-total = Итого:
-forge-payroll-console-bank-balance = Счёт:
 forge-payroll-console-next-pay = До выплаты:
 forge-payroll-console-last-pay = Выплачено:
 forge-payroll-console-outstanding-fine = К удержанию:

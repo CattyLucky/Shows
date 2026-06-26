@@ -155,7 +155,7 @@ public sealed partial class PlayerTab : Control
         UpdateHeaderSymbols();
 
         SearchList.PopulateList(sortedPlayers.Select(info => new PlayerListData(info,
-                $"{info.Username} {info.CharacterName} {info.IdentityName} {info.StartingJob}"))
+                $"{info.Username} {info.CharacterName} {info.IdentityName} {info.StartingJob} {info.BankBalance?.ToString() ?? string.Empty}"))
             .ToList());
     }
 
@@ -170,8 +170,9 @@ public sealed partial class PlayerTab : Control
             _playerTabColorSetting,
             _playerTabRoleSetting,
             _playerTabSymbolSetting);
+        entry.OnBankBalanceSaved += _adminSystem.SetPlayerBankBalance;
         button.AddChild(entry);
-        button.ToolTip = $"{player.Username}, {player.CharacterName}, {player.IdentityName}, {player.StartingJob}";
+        button.ToolTip = $"{player.Username}, {player.CharacterName}, {player.IdentityName}, {player.StartingJob}, {player.BankBalance?.ToString() ?? Loc.GetString("generic-unknown-title")}";
         button.StyleClasses.Clear();
     }
 
@@ -239,6 +240,7 @@ public sealed partial class PlayerTab : Control
             Header.Character => Compare(x.CharacterName, y.CharacterName),
             Header.Job => Compare(x.StartingJob, y.StartingJob),
             Header.RoleType => y.SortWeight - x.SortWeight,
+            Header.BankBalance => Nullable.Compare(x.BankBalance, y.BankBalance),
             Header.Playtime => TimeSpan.Compare(x.OverallPlaytime ?? default, y.OverallPlaytime ?? default),
             _ => 1
         };

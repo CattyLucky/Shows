@@ -18,8 +18,8 @@ public sealed class ForgePayrollConsoleBoundUserInterface : BoundUserInterface
 
         _window = this.CreateWindow<ForgePayrollConsoleWindow>();
         _window.OnRecordSelected += employee => SendMessage(new ForgePayrollSelectRecordMessage(employee));
-        _window.OnSavePressed += (employee, jobPrototype, baseSalary, adjustment, bankBalance, status) =>
-            SendMessage(new ForgePayrollUpdateRecordMessage(employee, jobPrototype, baseSalary, adjustment, bankBalance, status));
+        _window.OnSavePressed += (employee, jobPrototype, baseSalary, adjustment, status) =>
+            SendMessage(new ForgePayrollUpdateRecordMessage(employee, jobPrototype, baseSalary, adjustment, status));
         _window.OnPayNowPressed += employee => SendMessage(new ForgePayrollPayNowMessage(employee));
         _window.OnFinePressed += (employee, amount, reason) => SendMessage(new ForgePayrollFineMessage(employee, amount, reason));
     }
