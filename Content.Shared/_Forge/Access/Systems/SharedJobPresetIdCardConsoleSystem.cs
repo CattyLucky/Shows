@@ -1,0 +1,37 @@
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared._Forge.Access.Components;
+using Robust.Shared.Log;
+
+namespace Content.Shared._Forge.Access.Systems;
+
+public abstract partial class SharedJobPresetIdCardConsoleSystem : EntitySystem
+{
+    public const string Sawmill = "job-preset-id-card-console";
+
+    [Dependency] protected ItemSlotsSystem ItemSlotsSystem = default!;
+    [Dependency] private ILogManager _logManager = default!;
+
+    protected ISawmill JobPresetSawmill = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        JobPresetSawmill = _logManager.GetSawmill(Sawmill);
+
+        SubscribeLocalEvent<JobPresetIdCardConsoleComponent, ComponentInit>(OnComponentInit);
+        SubscribeLocalEvent<JobPresetIdCardConsoleComponent, ComponentRemove>(OnComponentRemove);
+    }
+
+    private void OnComponentInit(EntityUid uid, JobPresetIdCardConsoleComponent component, ComponentInit args)
+    {
+        ItemSlotsSystem.AddItemSlot(uid, JobPresetIdCardConsoleComponent.PrivilegedIdCardSlotId, component.PrivilegedIdSlot);
+        ItemSlotsSystem.AddItemSlot(uid, JobPresetIdCardConsoleComponent.TargetIdCardSlotId, component.TargetIdSlot);
+    }
+
+    private void OnComponentRemove(EntityUid uid, JobPresetIdCardConsoleComponent component, ComponentRemove args)
+    {
+        ItemSlotsSystem.RemoveItemSlot(uid, component.PrivilegedIdSlot);
+        ItemSlotsSystem.RemoveItemSlot(uid, component.TargetIdSlot);
+    }
+}

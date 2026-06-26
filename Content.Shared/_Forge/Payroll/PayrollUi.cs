@@ -72,6 +72,7 @@ public sealed class ForgePayrollRecordState
     public readonly int BaseSalary;
     public readonly int Adjustment;
     public readonly int TotalSalary;
+    public readonly int BankBalance;
     public readonly ForgePayrollEmploymentStatus Status;
     public readonly int SecondsToNextPay;
     public readonly int LastPaidAmount;
@@ -88,6 +89,7 @@ public sealed class ForgePayrollRecordState
         int baseSalary,
         int adjustment,
         int totalSalary,
+        int bankBalance,
         ForgePayrollEmploymentStatus status,
         int secondsToNextPay,
         int lastPaidAmount,
@@ -103,6 +105,7 @@ public sealed class ForgePayrollRecordState
         BaseSalary = baseSalary;
         Adjustment = adjustment;
         TotalSalary = totalSalary;
+        BankBalance = bankBalance;
         Status = status;
         SecondsToNextPay = secondsToNextPay;
         LastPaidAmount = lastPaidAmount;
@@ -124,12 +127,14 @@ public sealed class ForgePayrollUpdateRecordMessage(
     string jobPrototype,
     int baseSalary,
     int adjustment,
+    int bankBalance,
     ForgePayrollEmploymentStatus status) : BoundUserInterfaceMessage
 {
     public readonly NetEntity Employee = employee;
     public readonly string JobPrototype = jobPrototype;
     public readonly int BaseSalary = baseSalary;
     public readonly int Adjustment = adjustment;
+    public readonly int BankBalance = bankBalance;
     public readonly ForgePayrollEmploymentStatus Status = status;
 }
 

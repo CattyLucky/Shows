@@ -118,6 +118,18 @@ public sealed partial class ForgePayrollSystem : EntitySystem
         return true;
     }
 
+    public bool TrySyncJob(EntityUid employee, JobPrototype job, ForgePayrollRecordComponent? payroll = null)
+    {
+        if (!Resolve(employee, ref payroll, false))
+            return false;
+
+        payroll.JobPrototype = job.ID;
+        payroll.JobTitle = job.LocalizedName;
+        payroll.Department = GetDepartmentName(job.ID);
+        payroll.BaseSalary = GetDefaultSalary(job.ID);
+        return true;
+    }
+
     private bool TryPay(Entity<ForgePayrollRecordComponent> employee, TimeSpan now, TimeSpan interval)
     {
         var (uid, payroll) = employee;

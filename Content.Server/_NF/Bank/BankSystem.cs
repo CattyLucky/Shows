@@ -187,6 +187,31 @@ public sealed partial class BankSystem : SharedBankSystem
         return true;
     }
 
+    public bool TrySetBalance(EntityUid mobUid, int balance)
+    {
+        if (!TryComp<BankAccountComponent>(mobUid, out var bank))
+            return false;
+
+        if (!_playerManager.TryGetSessionByEntity(mobUid, out var session))
+            return false;
+
+        if (!_prefsManager.TryGetCachedPreferences(session.UserId, out var prefs))
+            return false;
+
+        if (prefs.SelectedCharacter is not HumanoidCharacterProfile profile)
+            return false;
+
+        balance = Math.Max(0, balance);
+
+        if (!TrySetProfileBalance(session, prefs, profile, balance))
+            return false;
+
+        bank.Balance = balance;
+        Dirty(mobUid, bank);
+        RaiseLocalEvent(new BalanceChangedEvent(session, balance));
+        return true;
+    }
+
     public void SetMobBalance(EntityUid mobUid, int balance, bool preserveOnSpawnComplete = false)
     {
         var bank = EnsureComp<BankAccountComponent>(mobUid);

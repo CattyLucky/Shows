@@ -123,6 +123,11 @@
                                     <Label Name="TotalSalaryLabel"
                                            StyleClasses="LabelHeading" />
 
+                                    <Label Text="{Loc 'forge-payroll-console-bank-balance'}"
+                                           StyleClasses="LabelSubText" />
+                                    <SpinBox Name="BankBalanceSpinBox"
+                                             HorizontalExpand="True" />
+
                                     <Label Text="{Loc 'forge-payroll-console-next-pay'}"
                                            StyleClasses="LabelSubText" />
                                     <Label Name="NextPayLabel" />

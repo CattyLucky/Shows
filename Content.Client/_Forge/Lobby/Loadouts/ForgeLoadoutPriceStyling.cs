@@ -8,8 +8,8 @@ namespace Content.Client.Lobby.UI.Loadouts;
 
 public sealed partial class LoadoutContainer
 {
-    private static readonly Color ForgePriceBack = Color.FromHex("#202126");
-    private static readonly Color ForgePriceBorder = Color.FromHex("#3A3D46");
+    private static readonly Color ForgePriceBack = Color.FromHex("#23170F");
+    private static readonly Color ForgePriceBorder = Color.FromHex("#8A6830");
     private static readonly Color ForgePriceText = Color.FromHex("#D6C79B");
     private static readonly Color ForgePriceUnavailableText = Color.FromHex("#B77A74");
 
@@ -53,8 +53,8 @@ public sealed partial class LoadoutContainer
 
         _forgePriceFrame = new PanelContainer
         {
-            MinSize = new Vector2(78, 0),
-            Margin = new Thickness(0, 0, 5, 0),
+            MinSize = new Vector2(84, 64),
+            Margin = new Thickness(0),
             VerticalAlignment = VAlignment.Center,
             MouseFilter = MouseFilterMode.Ignore,
             PanelOverride = new StyleBoxFlat
