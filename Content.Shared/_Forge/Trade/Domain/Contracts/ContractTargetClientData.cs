@@ -5,8 +5,8 @@ using Content.Shared.FixedPoint;
 namespace Content.Shared._Forge.Trade;
 
 
-[Serializable, NetSerializable,]
-public sealed class ContractTargetClientData
+[DataDefinition, Serializable, NetSerializable,]
+public sealed partial class ContractTargetClientData
 {
     [DataField("match")]
     public PrototypeMatchMode MatchMode = PrototypeMatchMode.Exact;

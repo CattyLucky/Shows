@@ -333,6 +333,7 @@ namespace Content.Server.Database
         public int Age { get; set; }
         [Column("bank_balance")] public int BankBalance { get; set; }
         public string Sex { get; set; } = null!;
+        public string? Voice { get; set; } = null!; // If null, the voice gets defaulted to the sex associated value
         public string Gender { get; set; } = null!;
         public string Species { get; set; } = null!;
         [Column(TypeName = "jsonb")] public JsonDocument? OrganMarkings { get; set; } = null!;

@@ -138,9 +138,9 @@ public sealed partial class NcContractSystem : EntitySystem
         Entity<MapGridComponent> grid;
         try
         {
-            grid = _mapManager.CreateGridEntity(generationMapId);
+            grid = _map.CreateGridEntity(generationMapId);
             _xform.SetMapCoordinates(grid, new MapCoordinates(Vector2.Zero, generationMapId));
-            _mapManager.DoMapInitialize(generationMapId);
+            _map.InitializeMap(generationMapId);
         }
         catch (Exception e)
         {
@@ -351,7 +351,7 @@ public sealed partial class NcContractSystem : EntitySystem
             .Enlarged(Math.Max(0f, safetyRadius));
 
         _huntDebrisPlacementGridScratch.Clear();
-        _mapManager.FindGridsIntersecting(
+        _map.FindGridsIntersecting(
             coords.MapId,
             bounds,
             ref _huntDebrisPlacementGridScratch,
@@ -404,7 +404,7 @@ public sealed partial class NcContractSystem : EntitySystem
             .Enlarged(Math.Max(0f, safetyRadius));
 
         _huntDebrisPlacementGridScratch.Clear();
-        _mapManager.FindGridsIntersecting(
+        _map.FindGridsIntersecting(
             xform.MapID,
             bounds,
             ref _huntDebrisPlacementGridScratch,
@@ -792,14 +792,12 @@ public sealed partial class NcContractSystem : EntitySystem
 
         var exteriorTiles = new List<(Vector2i Index, Tile Tile)>(exteriorTileSet.Count);
         var rockCandidates = new List<Vector2i>();
-        var tileRandom = _random.GetRandom();
-
         foreach (var tile in exteriorTileSet)
         {
             if (!TryPickHuntDungeonExteriorTile(contractId, config.HuntDungeonExteriorTiles, out var tileDef))
                 return;
 
-            exteriorTiles.Add((tile, _tile.GetVariantTile(tileDef, tileRandom)));
+            exteriorTiles.Add((tile, _tile.GetVariantTile(tileDef, _random)));
 
             if (config.HuntDungeonExteriorRocks.Count > 0 &&
                 !IsNearGeneratedHuntDungeonTile(

@@ -33,7 +33,6 @@ public sealed partial class NcContractSystem : EntitySystem
     [Dependency] private GridFixtureSystem _gridFixture = default!;
     [Dependency] private GhostRoleSystem _ghostRoles = default!;
     [Dependency] private SharedMapSystem _map = default!;
-    [Dependency] private IMapManager _mapManager = default!;
     [Dependency] private PinpointerSystem _pinpointer = default!;
     [Dependency] private SharedShuttleSystem _shuttle = default!;
     [Dependency] private TagSystem _tags = default!;
