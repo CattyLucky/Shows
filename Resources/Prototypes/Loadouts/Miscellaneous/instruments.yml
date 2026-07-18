@@ -25,6 +25,7 @@
 
 - type: loadout
   id: Synthesizer
+  price: 1000
   storage:
     back:
     - SynthesizerInstrument
@@ -43,6 +44,7 @@
 
 - type: loadout
   id: ElectricGuitar
+  price: 650
   storage:
     back:
     - ElectricGuitarInstrument
@@ -115,6 +117,7 @@
 
 - type: loadout
   id: Saxophone
+  price: 450
   storage:
     back:
     - SaxophoneInstrument
@@ -163,6 +166,7 @@
 
 - type: loadout
   id: Bagpipe
+  price: 500
   storage:
     back:
     - BagpipeInstrument

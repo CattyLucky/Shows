@@ -31,12 +31,14 @@
 # Toys
 - type: loadout
   id: PlushieLizard
+  price: 150
   storage:
     back:
     - PlushieLizard
 
 - type: loadout
   id: PlushieSpaceLizard
+  price: 300
   storage:
     back:
     - PlushieSpaceLizard
@@ -98,6 +100,7 @@
 
 - type: loadout
   id: CigarGold
+  price: 250
   effects:
   - !type:GroupLoadoutEffect
     proto: Command
@@ -116,6 +119,7 @@
 
 - type: loadout
   id: BoxFolderPlasticClipboardThreePapers
+  price: 50
   storage:
     back:
     - BoxFolderPlasticClipboardThreePapers
@@ -302,6 +306,7 @@
 
 - type: loadout
   id: OffsetCaneNT
+  price: 500
   effects:
   - !type:JobRequirementLoadoutEffect
     requirement:

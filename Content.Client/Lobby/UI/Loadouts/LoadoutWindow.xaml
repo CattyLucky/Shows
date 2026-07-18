@@ -2,9 +2,48 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
          xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
-         SetSize="800 800"
-         MinSize="800 128">
+         SetSize="840 800"
+         MinSize="760 150">
     <BoxContainer Orientation="Vertical" VerticalExpand="True">
+        <BoxContainer Orientation="Horizontal"
+                      Margin="10 8 10 4"
+                      SeparationOverride="8"
+                      HorizontalExpand="True">
+            <PanelContainer Name="CostFrame"
+                            MinSize="0 42"
+                            HorizontalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <graphics:StyleBoxFlat BackgroundColor="#202126"
+                                           BorderColor="#3A3D46"
+                                           BorderThickness="1"
+                                           ContentMarginTopOverride="8"
+                                           ContentMarginBottomOverride="8"
+                                           ContentMarginLeftOverride="10"
+                                           ContentMarginRightOverride="10" />
+                </PanelContainer.PanelOverride>
+                <Label Name="Cost"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       ClipText="True" />
+            </PanelContainer>
+            <PanelContainer Name="BalanceFrame"
+                            MinSize="0 42"
+                            HorizontalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <graphics:StyleBoxFlat BackgroundColor="#19211D"
+                                           BorderColor="#3D5546"
+                                           BorderThickness="1"
+                                           ContentMarginTopOverride="8"
+                                           ContentMarginBottomOverride="8"
+                                           ContentMarginLeftOverride="10"
+                                           ContentMarginRightOverride="10" />
+                </PanelContainer.PanelOverride>
+                <Label Name="Balance"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       ClipText="True" />
+            </PanelContainer>
+        </BoxContainer>
         <BoxContainer Name="RoleNameBox" Orientation="Vertical" Margin="10">
             <Label Name="LoadoutNameLabel"/>
             <PanelContainer HorizontalExpand="True" SetHeight="24">

@@ -1350,7 +1350,7 @@ entities:
       parent: 1
     - type: FaxMachine
       name: Wizard's Den
-- proto: FigureSpawner
+- proto: SpacemenFigurineSpawner90
   entities:
   - uid: 470
     components:

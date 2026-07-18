@@ -378,7 +378,7 @@ entities:
     - type: Transform
       pos: -1.542464,-1.1875
       parent: 55
-- proto: FigureSpawner
+- proto: SpacemenFigurineSpawner90
   entities:
   - uid: 10
     components:

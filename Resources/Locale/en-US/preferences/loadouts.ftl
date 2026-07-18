@@ -9,6 +9,10 @@ loadouts-min-limit = Min count: {$count}
 loadouts-max-limit = Max count: {$count}
 loadouts-points-limit = Points: {$count} / {$max}
 
+frontier-loadout-cost = Total Loadout Cost: {$cost}
+frontier-loadout-balance = Available Balance: {$balance}
+frontier-loadout-item-price = {$item} ({$price})
+
 loadouts-count-items-in-group = {$item} and {$count} other {$count ->
 [1] item
 *[other] items

@@ -185,7 +185,8 @@ namespace Content.Server.Preferences.Managers
                 (PreferenceUnavailableMode) profile.PreferenceUnavailable,
                 antags.ToHashSet(),
                 traits.ToHashSet(),
-                loadouts
+                loadouts,
+                profile.BankBalance
             );
         }
 
@@ -229,10 +230,10 @@ namespace Content.Server.Preferences.Managers
             if (message.Profile == null)
                 _sawmill.Error($"User {userId} sent a {nameof(MsgUpdateCharacter)} with a null profile in slot {message.Slot}.");
             else
-                await SetProfile(userId, message.Slot, message.Profile);
+                await SetProfile(userId, message.Slot, message.Profile, false);
         }
 
-        public async Task SetProfile(NetUserId userId, int slot, HumanoidCharacterProfile profile)
+        public async Task SetProfile(NetUserId userId, int slot, HumanoidCharacterProfile profile, bool authoritative = true)
         {
             if (!_cachedPlayerPrefs.TryGetValue(userId, out var prefsData) || !prefsData.PrefsLoaded)
             {
@@ -247,6 +248,13 @@ namespace Content.Server.Preferences.Managers
             var session = _playerManager.GetSessionById(userId);
 
             profile.EnsureValid(session, _dependencies);
+
+            if (!authoritative)
+            {
+                profile = curPrefs.Characters.TryGetValue(slot, out var oldProfile)
+                    ? profile.WithBankBalance(oldProfile.BankBalance)
+                    : profile.WithBankBalance(HumanoidCharacterProfile.DefaultBalance);
+            }
 
             var profiles = new Dictionary<int, HumanoidCharacterProfile>(curPrefs.Characters)
             {

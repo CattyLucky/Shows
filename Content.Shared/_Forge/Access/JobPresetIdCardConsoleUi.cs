@@ -1,0 +1,87 @@
+using Content.Shared.Access;
+using Content.Shared.Humanoid;
+using Content.Shared.Humanoid.Prototypes;
+using Content.Shared.Roles;
+using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
+
+namespace Content.Shared._Forge.Access;
+
+[Serializable, NetSerializable]
+public sealed class JobPresetIdCardConsoleApplyMessage : BoundUserInterfaceMessage
+{
+    public readonly ProtoId<JobPrototype> JobPrototype;
+
+    public JobPresetIdCardConsoleApplyMessage(ProtoId<JobPrototype> jobPrototype)
+    {
+        JobPrototype = jobPrototype;
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed class JobPresetIdCardConsoleCreateInjectorMessage : BoundUserInterfaceMessage
+{
+    public readonly ProtoId<JobPrototype> JobPrototype;
+
+    public JobPresetIdCardConsoleCreateInjectorMessage(ProtoId<JobPrototype> jobPrototype)
+    {
+        JobPrototype = jobPrototype;
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed class JobPresetIdCardConsoleBoundUserInterfaceState : BoundUserInterfaceState
+{
+    public readonly string PrivilegedIdName;
+    public readonly bool IsPrivilegedIdPresent;
+    public readonly bool IsPrivilegedIdAuthorized;
+    public readonly bool IsTargetIdPresent;
+    public readonly string TargetIdName;
+    public readonly List<ProtoId<AccessLevelPrototype>>? TargetIdAccessList;
+    public readonly List<ProtoId<AccessLevelPrototype>>? AllowedModifyAccessList;
+    public readonly ProtoId<JobPrototype> TargetIdJobPrototype;
+    public readonly bool HasTargetDemographics;
+    public readonly bool IgnoreDemographicRequirements;
+    public readonly bool RequirePresetAccessOnly;
+    public readonly int TargetAge;
+    public readonly ProtoId<SpeciesPrototype> TargetSpecies;
+    public readonly Sex TargetSex;
+
+    public JobPresetIdCardConsoleBoundUserInterfaceState(
+        bool isPrivilegedIdPresent,
+        bool isPrivilegedIdAuthorized,
+        bool isTargetIdPresent,
+        List<ProtoId<AccessLevelPrototype>>? targetIdAccessList,
+        List<ProtoId<AccessLevelPrototype>>? allowedModifyAccessList,
+        ProtoId<JobPrototype> targetIdJobPrototype,
+        string privilegedIdName,
+        string targetIdName,
+        bool ignoreDemographicRequirements = false,
+        bool requirePresetAccessOnly = false,
+        bool hasTargetDemographics = false,
+        int targetAge = 0,
+        ProtoId<SpeciesPrototype> targetSpecies = default,
+        Sex targetSex = Sex.Male)
+    {
+        IsPrivilegedIdPresent = isPrivilegedIdPresent;
+        IsPrivilegedIdAuthorized = isPrivilegedIdAuthorized;
+        IsTargetIdPresent = isTargetIdPresent;
+        TargetIdAccessList = targetIdAccessList;
+        AllowedModifyAccessList = allowedModifyAccessList;
+        TargetIdJobPrototype = targetIdJobPrototype;
+        PrivilegedIdName = privilegedIdName;
+        TargetIdName = targetIdName;
+        IgnoreDemographicRequirements = ignoreDemographicRequirements;
+        RequirePresetAccessOnly = requirePresetAccessOnly;
+        HasTargetDemographics = hasTargetDemographics;
+        TargetAge = targetAge;
+        TargetSpecies = targetSpecies;
+        TargetSex = targetSex;
+    }
+}
+
+[Serializable, NetSerializable]
+public enum JobPresetIdCardConsoleUiKey : byte
+{
+    Key,
+}

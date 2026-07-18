@@ -1,0 +1,8 @@
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckCloakCentcomAdmiral
+  name: admiral's cape
+  description: A vibrant green cape with gold stitching, worn by Nanotrasen Navy admirals.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Neck/Cloaks/admiral.rsi

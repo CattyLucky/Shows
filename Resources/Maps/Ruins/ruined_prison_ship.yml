@@ -2019,7 +2019,7 @@ entities:
     - type: Transform
       pos: 4.497028,-9.338669
       parent: 2
-- proto: EphedrineChemistryBottle
+- proto: ChemistryBottleEphedrine
   entities:
   - uid: 667
     components:
@@ -2454,7 +2454,7 @@ entities:
     - type: Transform
       pos: -0.53172827,2.545515
       parent: 2
-- proto: HandheldHealthAnalyzerUnpowered
+- proto: HandheldHealthAnalyzer
   entities:
   - uid: 499
     components:
@@ -2940,7 +2940,7 @@ entities:
     - type: Transform
       pos: 7.5,-27.5
       parent: 2
-- proto: PosterContrabandLustyExomorph
+- proto: PosterContrabandRealExomorph
   entities:
   - uid: 290
     components:

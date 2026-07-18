@@ -6129,7 +6129,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 44.5,1.5
       parent: 1653
-- proto: chem_master
+- proto: ChemMaster
   entities:
   - uid: 1454
     components:
@@ -8733,7 +8733,7 @@ entities:
     - type: Transform
       pos: 10.533063,27.58727
       parent: 1653
-- proto: RPED
+- proto: RCD
   entities:
   - uid: 1646
     components:
@@ -8967,7 +8967,7 @@ entities:
     - type: Transform
       pos: 12.5,13.5
       parent: 1653
-- proto: SignXenolab
+- proto: SignScience
   entities:
   - uid: 1461
     components:
@@ -9870,7 +9870,7 @@ entities:
     - type: Transform
       pos: 0.5,18.5
       parent: 1653
-- proto: ToySpawner
+- proto: ToySpawner90
   entities:
   - uid: 1246
     components:
@@ -9920,7 +9920,7 @@ entities:
     - type: Transform
       pos: 24.538218,15.750836
       parent: 1653
-- proto: VehicleJanicartDestroyed
+- proto: JanitorialTrolley
   entities:
   - uid: 729
     components:

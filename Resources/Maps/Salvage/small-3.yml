@@ -489,7 +489,7 @@ entities:
     - type: Transform
       pos: 0.5923343,9.580391
       parent: 10
-- proto: ToySpawner
+- proto: ToySpawner90
   entities:
   - uid: 470
     components:

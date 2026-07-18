@@ -1,0 +1,21 @@
+- type: entity
+  parent: ClothingShoesBase
+  id: ClothingShoesGreenLizardskin
+  name: green lizardskin shoes
+  description: They may have lost some of their lustre over the years, but these green lizardskin shoes fit you perfectly.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Shoes/Specific/disco.rsi
+  - type: Clothing
+    sprite: Corvax/Clothing/Shoes/Specific/disco.rsi
+
+- type: entity
+  parent: ClothingShoesBaseButcherable
+  id: ClothingShoesSchoolWhite
+  name: school white shoes
+  description: Stylish and comfortable school shoes in light color with stockings.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Shoes/Specific/schoolwhiteshoes.rsi
+  - type: Clothing
+    sprite: Corvax/Clothing/Shoes/Specific/schoolwhiteshoes.rsi

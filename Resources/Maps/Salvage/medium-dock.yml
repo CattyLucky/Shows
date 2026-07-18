@@ -782,7 +782,7 @@ entities:
         - Pressed: Toggle
         87:
         - Pressed: Toggle
-- proto: SignMinerDock
+- proto: SignSalvage
   entities:
   - uid: 106
     components:
@@ -815,7 +815,7 @@ entities:
     - type: Transform
       pos: -0.5,-2.5
       parent: 50
-- proto: ToySpawner
+- proto: ToySpawner90
   entities:
   - uid: 119
     components:

@@ -3155,7 +3155,7 @@ entities:
     - type: Transform
       pos: 15.616387,0.61007345
       parent: 588
-- proto: BookEscalationSecurity
+- proto: BookSecurity
   entities:
   - uid: 373
     components:
@@ -7532,7 +7532,7 @@ entities:
     - type: Transform
       pos: 14.5,47.5
       parent: 588
-- proto: DebugSMES
+- proto: DebugSMESRecharging
   entities:
   - uid: 971
     components:

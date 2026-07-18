@@ -71,6 +71,8 @@ public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisual
         if (!TryComp(uid, out SpriteComponent? sprite))
             return;
 
+        component.TextToDraw = component.Text.ToArray();
+
         // awkward to specify a textoffset of e.g. 0.1875 in the prototype
         component.TextOffset = Vector2.Multiply(TextScreenVisualsComponent.PixelSize, component.TextOffset);
         component.TimerOffset = Vector2.Multiply(TextScreenVisualsComponent.PixelSize, component.TimerOffset);

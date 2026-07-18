@@ -1902,7 +1902,7 @@ entities:
     - type: Transform
       pos: 30.5,81.5
       parent: 2
-- proto: CapacitorStockPart
+- proto: MicroManipulatorStockPart
   entities:
   - uid: 2323
     components:
@@ -4190,7 +4190,7 @@ entities:
     - type: Transform
       pos: 21.821127,57.831646
       parent: 2
-- proto: MatterBinStockPart
+- proto: MicroManipulatorStockPart
   entities:
   - uid: 2006
     components:

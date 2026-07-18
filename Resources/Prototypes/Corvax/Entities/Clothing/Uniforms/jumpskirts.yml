@@ -1,0 +1,43 @@
+- type: entity
+  parent: ClothingUniformSkirtBase
+  id: ClothingUniformJumpskirtCentcomOfficial
+  name: CentCom officer's suitskirt
+  description: A suitskirt worn by CentCom's highest-tier commanders.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/centcom_official.rsi
+  - type: Clothing
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/centcom_official.rsi
+
+- type: entity
+  parent: ClothingUniformSkirtBase
+  id: ClothingUniformJumpskirtCentcomOfficer
+  name: CentCom turtleneck skirt
+  description: A skirt version of the CentCom turtleneck.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/centcom_officer.rsi
+  - type: Clothing
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/centcom_officer.rsi
+
+- type: entity
+  parent: ClothingUniformSkirtBase
+  id: ClothingUniformJumpskirtElegantMaid
+  name: elegant maid uniform
+  description: An elegant maid uniform.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/elegantmaid.rsi
+  - type: Clothing
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/elegantmaid.rsi
+
+- type: entity
+  parent: ClothingUniformSkirtBase
+  id: ClothingUniformJumpskirtSchool
+  name: school skirt
+  description: A stylish and comfortable school skirt.
+  components:
+  - type: Sprite
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/schoolskirt.rsi
+  - type: Clothing
+    sprite: Corvax/Clothing/Uniforms/Jumpskirt/schoolskirt.rsi

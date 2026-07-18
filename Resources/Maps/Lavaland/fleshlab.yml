@@ -425,7 +425,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: -6.285738,12.272611
       parent: 1
-- proto: BorgModuleAdvancedTreatment
+- proto: BorgModuleAdvancedTopical
   entities:
   - uid: 344
     components:
@@ -1872,7 +1872,7 @@ entities:
     - type: Transform
       pos: -16.426855,-2.121459
       parent: 1
-- proto: HonkerChassis
+- proto: HonkerHarness
   entities:
   - uid: 331
     components:

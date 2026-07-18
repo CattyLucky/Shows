@@ -51,5 +51,10 @@ namespace Content.Client.Administration.Systems
             _playerList = msg.PlayersInfo.ToDictionary(x => x.SessionId, x => x);
             PlayerListChanged?.Invoke(msg.PlayersInfo);
         }
+
+        public void SetPlayerBankBalance(NetUserId userId, int balance)
+        {
+            RaiseNetworkEvent(new SetPlayerBankBalanceEvent(userId, balance));
+        }
     }
 }

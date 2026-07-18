@@ -18,6 +18,13 @@ public sealed partial class LoadoutPrototype : IPrototype, IEquipmentLoadout
     /// </summary>
     [DataField]
     public string? GroupBy;
+
+    /// <summary>
+    /// Bank balance price paid when this loadout is equipped on round start.
+    /// </summary>
+    [DataField]
+    public int Price = 0;
+
     /*
      * You can either use an existing StartingGearPrototype or specify it inline to avoid bloating yaml.
      */

@@ -98,7 +98,7 @@ entities:
     - type: GasTileOverlay
     - type: SpreaderGrid
     - type: GridPathfinding
-- proto: CapacitorStockPart
+- proto: MicroManipulatorStockPart
   entities:
   - uid: 5
     components:

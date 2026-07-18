@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 04/18/2026 07:55:59
-  entityCount: 8634
+  entityCount: 8636
 maps:
 - 1
 grids:
@@ -125,7 +125,7 @@ entities:
           Oxygen: 21.824879
           Nitrogen: 82.10312
     - type: Parallax
-      parallax: Water
+      parallax: SillyIsland
     - type: MapLight
       ambientLightColor: '#E0A0C0FF'
     - type: LightCycle
@@ -9032,7 +9032,6 @@ entities:
   - uid: 8634
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
       pos: 4.5,12.5
       parent: 2
     - type: DeviceNetwork
@@ -44233,7 +44232,7 @@ entities:
     - type: Transform
       pos: -23.487305,8.623594
       parent: 2
-- proto: RightArmHuman
+- proto: OrganHumanArmRight
   entities:
   - uid: 4689
     components:
@@ -44321,13 +44320,6 @@ entities:
     components:
     - type: Transform
       pos: 7.6471786,-1.5472101
-      parent: 2
-- proto: RubberStampSyndicate
-  entities:
-  - uid: 4700
-    components:
-    - type: Transform
-      pos: -19.208584,11.879914
       parent: 2
 - proto: SalvageFleshSpawner
   entities:
@@ -60751,6 +60743,18 @@ entities:
       name: знак "парк"
     - type: Transform
       pos: -10.552152,-6.4674454
+      parent: 2
+- proto: ForgeExpeditionTradeTerminal
+  entities:
+  - uid: 8635
+    components:
+    - type: Transform
+      pos: 23.5,8.5
+      parent: 2
+  - uid: 8636
+    components:
+    - type: Transform
+      pos: 17.5,24.5
       parent: 2
 - proto: Wrench
   entities:

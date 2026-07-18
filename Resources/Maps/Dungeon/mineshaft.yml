@@ -528,7 +528,7 @@ entities:
     - type: Transform
       pos: 24.5,32.5
       parent: 2
-- proto: BorgModuleGPS
+- proto: HandheldGPSBasic
   entities:
   - uid: 800
     components:
@@ -1692,7 +1692,7 @@ entities:
     - type: Transform
       pos: 20.506927,28.78566
       parent: 2
-- proto: ClothingNeckCloakMiner
+- proto: ClothingNeckCloakGoliathCloak
   entities:
   - uid: 1039
     components:
@@ -2792,14 +2792,14 @@ entities:
     - type: Transform
       pos: 26.5,28.5
       parent: 2
-- proto: FloraRockSolid01
+- proto: FloraRockSolid
   entities:
   - uid: 205
     components:
     - type: Transform
       pos: 14.417985,10.609197
       parent: 2
-- proto: FloraRockSolid03
+- proto: FloraRockSolid
   entities:
   - uid: 542
     components:
@@ -2825,7 +2825,7 @@ entities:
     - type: Transform
       pos: 17.526375,29.71021
       parent: 2
-- proto: FoodMeatRatdoubleKebab
+- proto: FoodMeatRat
   entities:
   - uid: 1051
     components:
@@ -3131,7 +3131,7 @@ entities:
     - type: Transform
       pos: 43.573917,7.488577
       parent: 2
-- proto: LeftLegBorgEngineer
+- proto: LeftLegBorg
   entities:
   - uid: 808
     components:
@@ -4642,7 +4642,7 @@ entities:
     - type: Transform
       pos: 42.660984,19.533558
       parent: 2
-- proto: TorsoBorgJanitor
+- proto: TorsoBorg
   entities:
   - uid: 835
     components:

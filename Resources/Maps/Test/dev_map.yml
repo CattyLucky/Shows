@@ -10251,7 +10251,7 @@ entities:
     - type: Physics
       canCollide: False
     - type: InsideEntityStorage
-- proto: FoodMeatSnail
+- proto: FoodMeatSnailCooked
   entities:
   - uid: 994
     components:

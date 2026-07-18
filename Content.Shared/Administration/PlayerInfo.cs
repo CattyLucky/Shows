@@ -19,7 +19,8 @@ public sealed record PlayerInfo(
     NetUserId SessionId,
     bool Connected,
     bool ActiveThisRound,
-    TimeSpan? OverallPlaytime)
+    TimeSpan? OverallPlaytime,
+    int? BankBalance)
 {
     private string? _playtimeString;
 

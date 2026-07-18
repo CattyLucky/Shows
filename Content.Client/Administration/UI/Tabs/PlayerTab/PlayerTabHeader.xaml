@@ -32,6 +32,13 @@
                Text="{Loc player-tab-roletype}"
                MouseFilter="Pass"/>
         <cc:VSeparator/>
+        <Label Name="BankBalanceLabel"
+               SizeFlagsStretchRatio="2"
+               HorizontalExpand="True"
+               ClipText="True"
+               Text="{Loc player-tab-bank-balance}"
+               MouseFilter="Pass"/>
+        <cc:VSeparator/>
         <Label Name="PlaytimeLabel"
                SizeFlagsStretchRatio="1"
                HorizontalExpand="True"
